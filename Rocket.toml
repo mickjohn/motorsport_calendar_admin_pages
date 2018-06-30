@@ -1,0 +1,9 @@
+[development]
+address = "127.0.0.1"
+port = 7000
+log = "normal"
+template_dir = "www"
+
+[development.tls]
+certs = "certs/cert.pem"
+key = "certs/key.pem"
