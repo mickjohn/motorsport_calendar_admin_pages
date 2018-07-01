@@ -44,9 +44,6 @@ fn main() {
     // let event = client.get_event(&1);
     // println!("{:?}", event);
 
-    // let auth_check = client.authenticate();
-    // println!("{:?}", auth_check);
-
     // env_logger::init();
     let config_path = Path::new("config.toml");
     let config = config::Config::from_toml_file(&config_path).unwrap();

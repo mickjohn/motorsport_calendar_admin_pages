@@ -12,11 +12,12 @@ pub fn dashboard(mut cookies: Cookies) -> Result<Template, Redirect> {
         .map(|session| {
             debug!("Found session cookie!");
             debug!("Renewing session cookie!");
-            // let new_session = web::renew_session(&mut cookies, session);
+            let new_session = web::renew_session(&mut cookies, session);
             let mut context = HashMap::new();
             context.insert(
                 "username".to_string(),
-                session.get_user().username.to_string(),
+                // session.get_user().username.to_string(),
+                new_session.get_user().username.to_string(),
             );
             Template::render("dashboard", &context)
         })

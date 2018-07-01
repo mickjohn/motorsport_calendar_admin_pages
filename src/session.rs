@@ -47,7 +47,7 @@ impl Session {
         Session {
             id: Session::generate_session_id(),
             user: self.user,
-            expires: Utc::now(),
+            expires: Utc::now() + Duration::seconds(*SESSION_DURATION_SECS),
         }
     }
 

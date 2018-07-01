@@ -1,11 +1,11 @@
-use super::super::user::UserWithPlaintextPassword;
 use super::super::client::Client;
+use super::super::user::UserWithPlaintextPassword;
 use super::WebConfig;
-use rocket_contrib::Template;
 use rocket::http::{Cookie, Cookies};
-use rocket::request::{Form, FlashMessage};
+use rocket::request::{FlashMessage, Form};
 use rocket::response::{Flash, Redirect};
 use rocket::State;
+use rocket_contrib::Template;
 use session::{self, Session};
 use std::collections::HashMap;
 use web;
@@ -22,9 +22,7 @@ pub fn login_page_flash_message(flash: Option<FlashMessage>) -> Template {
 }
 
 #[get("/login", rank = 2)]
-pub fn login_page(
-    mut cookies: Cookies,
-) -> Result<Template, Redirect> {
+pub fn login_page(mut cookies: Cookies) -> Result<Template, Redirect> {
     web::get_sesssion_from_cookies(&mut cookies)
         .map(|session| {
             debug!("Found session cookie!");
@@ -57,20 +55,22 @@ fn login_user(
         }
         Err(_) => {
             info!("Username {} failed to login", user.username);
-            Err(Flash::error(Redirect::to("/"), "Invalid username or password"))
+            Err(Flash::error(
+                Redirect::to("/"),
+                "Invalid username or password",
+            ))
         }
     }
 }
 
 #[get("/logout")]
 fn logout_user(mut cookies: Cookies) -> Flash<Redirect> {
-    web::get_sesssion_from_cookies(&mut cookies)
-        .map(|session| {
-            debug!("Found session cookie, loging out user");
-            let mut session_map = web::SESSION_MAP.write().unwrap();
-            session_map.remove(&session.get_id().to_string());
-            cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
-        });
+    web::get_sesssion_from_cookies(&mut cookies).map(|session| {
+        debug!("Found session cookie, loging out user");
+        let mut session_map = web::SESSION_MAP.write().unwrap();
+        session_map.remove(&session.get_id().to_string());
+        cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
+    });
     Flash::success(Redirect::to("/"), "Successfully logged out.")
 }
 

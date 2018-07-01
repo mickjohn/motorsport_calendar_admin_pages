@@ -1,14 +1,14 @@
 use super::config;
 // use super::env_log;
 use super::session::Session;
+use chrono::prelude::*;
 use rocket;
 use rocket::http::{Cookie, Cookies};
-use rocket::response::Redirect;
 use rocket::response::NamedFile;
+use rocket::response::Redirect;
 use rocket::{Rocket, State};
 use rocket_contrib::Template;
 use session;
-use chrono::prelude::*;
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -65,7 +65,10 @@ fn index(cookies: Cookies) -> Result<Template, Redirect> {
 
 fn clean_expired_cookies() {
     let now = Utc::now();
-    SESSION_MAP.write().unwrap().retain(|_, ref mut v| v.get_expires() <= &now);
+    SESSION_MAP
+        .write()
+        .unwrap()
+        .retain(|_, ref mut v| v.get_expires() >= &now);
 }
 
 fn init_rocket(web_config: WebConfig) -> Rocket {
@@ -110,34 +113,28 @@ fn get_sesssion_from_cookies(cookies: &mut Cookies) -> Option<Session> {
     session
 }
 
-/*
- * 1) Get old session ID
- * 2) Renew Session to get new Session
- * 3) Remove old Cookie
- * 4) Add new Cookie
- * 5) Remove Old session
- * 6) Add New Session
- * 7) Done
- */
 fn renew_session(cookies: &mut Cookies, session: Session) -> Session {
-    let new_session = {
-        let sesion_map = SESSION_MAP.write().unwrap();
-        let old_session_id = session.get_id().to_string();
-        let new_session = session.renew();
-        cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
+    let old_session_id = session.get_id().to_string();
+    let new_session = session.renew();
+    cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
 
-        let cookie_string = format!(
-            "{}={}; HttpOnly; Secure; Expires={}; path=/",
-            session::SESSION_COOKIE_NAME,
-            new_session.get_id().to_string(),
-            new_session.get_expires_date_string(),
-            );
+    let cookie_string = format!(
+        "{}={}; HttpOnly; Secure; Expires={}; path=/",
+        session::SESSION_COOKIE_NAME,
+        new_session.get_id().to_string(),
+        new_session.get_expires_date_string(),
+    );
+    let cookie = Cookie::parse(cookie_string).unwrap();
+    cookies.add_private(cookie);
 
-        cookies.add_private(Cookie::parse(cookie_string).unwrap());
-        let key = new_session.get_id().to_string();
-        info!("session created for user {}", new_session.get_user().username);
-        SESSION_MAP.write().unwrap().insert(key, new_session.clone());
-        new_session
-    };
+    let key = new_session.get_id().to_string();
+    info!(
+        "session renewed for user {}",
+        new_session.get_user().username
+    );
+
+    let mut session_map = SESSION_MAP.write().unwrap();
+    session_map.insert(key, new_session.clone());
+    session_map.remove(&old_session_id);
     new_session
 }
