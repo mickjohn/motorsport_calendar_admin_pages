@@ -5,8 +5,8 @@ use rand::{thread_rng, Rng};
 use std::iter;
 use user::UserWithPlaintextPassword;
 
-const SESSION_ID_LEN: &'static usize = &64;
-const SESSION_DURATION_SECS: &'static i64 = &(5 * 60);
+const SESSION_ID_LEN: &usize = &64;
+const SESSION_DURATION_SECS: &i64 = &(5 * 60);
 //                                       Sun, 15 Jul 2012 00:00:01 GMT
 const SESSION_COOKIE_DATE_FORMAT: &str = "%a, %d %h %Y %H:%M:%S GMT";
 pub const SESSION_COOKIE_NAME: &str = "session_id";

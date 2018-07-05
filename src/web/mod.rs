@@ -59,8 +59,8 @@ fn static_js(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
 }
 
 #[get("/")]
-fn index(cookies: Cookies) -> Result<Template, Redirect> {
-    dashboard::dashboard(cookies)
+fn index(cookies: Cookies, config: State<WebConfig>) -> Result<Template, Redirect> {
+    dashboard::dashboard(cookies, config)
 }
 
 fn clean_expired_cookies() {
@@ -104,13 +104,17 @@ pub fn start(web_config: WebConfig) {
 
 fn get_sesssion_from_cookies(cookies: &mut Cookies) -> Option<Session> {
     // Adding extra scope to limit the read lock
-    let session = {
-        let session_map = SESSION_MAP.read().unwrap();
-        cookies
-            .get_private(session::SESSION_COOKIE_NAME)
-            .and_then(|session_cookie| session_map.get(session_cookie.value()).cloned())
-    };
-    session
+    // let session = {
+    //     let session_map = SESSION_MAP.read().unwrap();
+    //     cookies
+    //         .get_private(session::SESSION_COOKIE_NAME)
+    //         .and_then(|session_cookie| session_map.get(session_cookie.value()).cloned())
+    // };
+    // session
+    let session_map = SESSION_MAP.read().unwrap();
+    cookies
+        .get_private(session::SESSION_COOKIE_NAME)
+        .and_then(|session_cookie| session_map.get(session_cookie.value()).cloned())
 }
 
 fn renew_session(cookies: &mut Cookies, session: Session) -> Session {

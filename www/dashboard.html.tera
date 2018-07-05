@@ -10,6 +10,8 @@
     -->
     <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json"> -->
     <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
     <!-- <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"> -->
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -20,43 +22,29 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>MJ Admin</title>
   </head>
   <body>
+    <!-- include header include -->
+    {% include "inc_header" %}
+
     <!-- <noscript> -->
     <!--   You need to enable JavaScript to run this app. -->
     <!-- </noscript> -->
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <h2>Menu</h2>
-      <a href="#" >&#128480; Dashboard</a>
-      <a href="#" >Events</a>
-      <a href="#" >Sessions</a>
-      <a href="/logout" id="logout">Logout</a>
-    </div>
+    <!-- include sidebar include -->
+    {% include "inc_sidebar" %}
+
     <div id="root">
       <div id="sport-count-section">
+      {% for sport_info in sport_info_list %}
       <a href="#">
         <div class="sport-count">
-          <h1>Formula 1</h1>
-          <h2>22 Events</h2>
-          <h3>110 Sessions</h3>
+          <h1>{{ sport_info.name }}</h1>
+          <h2>{{ sport_info.event_count }} Events</h2>
+          <h3>{{ sport_info.session_count }} Sessions</h3>
         </div>
       </a>
-      <a href="#">
-        <div class="sport-count">
-          <h1>Indycar</h1>
-          <h2>17 Events</h2>
-          <h3>80 Sessions</h3>
-        </div>
-      </a>
-      <a href="#">
-        <div class="sport-count">
-          <h1>Indycar</h1>
-          <h2>17 Events</h2>
-          <h3>80 Sessions</h3>
-        </div>
-      </a>
+      {% endfor %}
     </div>
       </div>
   </body>

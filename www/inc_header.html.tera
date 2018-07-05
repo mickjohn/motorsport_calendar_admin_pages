@@ -1,0 +1,9 @@
+    <header class="header">
+      <span>
+        <h1>Mickjohn.com Admin Pages</h1>
+        <span class="header-right">
+          <h4>Welcome {{ username }}</h4>
+          <a href="/logout">Logout</a>
+        </span>
+      </span>
+    </header>

@@ -1,0 +1,23 @@
+/* Header */
+.header {
+  background-color: #934444;
+  margin: 0;
+}
+
+.header h1 {
+  text-align: center;
+  margin: 0;
+  display: inline
+}
+
+.header-right {
+  float: right;
+  margin: 0;
+  padding-top: 0.6em;
+  padding-right: 2em;
+}
+
+.header-right h4,a {
+  display: inline;
+}
+/* End Header */

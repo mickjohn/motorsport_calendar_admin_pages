@@ -43,8 +43,8 @@ pub struct Client {
 impl Client {
     pub fn new(api_url: String, user: Uwpp) -> Self {
         Client {
-            api_url: api_url,
-            user: user,
+            api_url,
+            user,
         }
     }
 
@@ -77,7 +77,7 @@ impl Client {
         Ok(events)
     }
 
-    pub fn get_event(&self, id: &i32) -> Result<Event, Error> {
+    pub fn get_event(&self, id: i32) -> Result<Event, Error> {
         let client = self.http_client()?;
         let url = format!("{}/events/{}", self.api_url, id);
         let mut response = client.get(&url).send()?;

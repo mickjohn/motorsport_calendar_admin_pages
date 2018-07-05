@@ -25,6 +25,10 @@ body {
   width: 20em;
 }
 
+#sport-count-section a, u {
+    text-decoration: none;
+}
+
 .sport-count h1,h2,h3 {
   margin: 0;
   padding: 0.3em;
@@ -35,40 +39,3 @@ body {
 /* } */
 
 /* End sport counts */
-
-
-/* Sidebar */
-.sidebar {
-  height: 100%;
-  width: 17em;
-  background-color: #303030;
-  overflow: auto;
-  position: fixed;
-  display: block;
-  color: #c3a689;
-}
-
-.sidebar h2 {
-  margin: 1em;
-}
-
-.sidebar a {
-  color: #87d787;
-  padding-left: 2em;
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-  display: block;
-}
-
-.sidebar a:hover {
-  background-color: #484848;
-}
-
-#logout {
-	position:absolute;
-	bottom:0;
-	width:100%;
-	height:60px;
-}
-/* End sidebar */
-

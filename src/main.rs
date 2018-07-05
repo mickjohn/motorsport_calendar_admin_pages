@@ -38,8 +38,6 @@ use std::path::Path;
 
 fn main() {
     // let client = client::Client::new(api_url, user);
-    // let events = client.get_events();
-    // println!("{:?}", events);
 
     // let event = client.get_event(&1);
     // println!("{:?}", event);

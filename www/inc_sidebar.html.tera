@@ -1,0 +1,7 @@
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <a href="#" >&#128480; Dashboard</a>
+      <a href="#" >Events</a>
+      <a href="#" >Sessions</a>
+      <a href="/logout" class="sidebar-logout">Logout</a>
+    </div>

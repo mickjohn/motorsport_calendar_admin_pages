@@ -65,12 +65,12 @@ fn login_user(
 
 #[get("/logout")]
 fn logout_user(mut cookies: Cookies) -> Flash<Redirect> {
-    web::get_sesssion_from_cookies(&mut cookies).map(|session| {
+    if let Some(session) = web::get_sesssion_from_cookies(&mut cookies) {
         debug!("Found session cookie, loging out user");
         let mut session_map = web::SESSION_MAP.write().unwrap();
         session_map.remove(&session.get_id().to_string());
         cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
-    });
+    }
     Flash::success(Redirect::to("/"), "Successfully logged out.")
 }
 
