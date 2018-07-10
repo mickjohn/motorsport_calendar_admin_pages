@@ -9,9 +9,9 @@
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
     <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json"> -->
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
     <!-- <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"> -->
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -37,7 +37,7 @@
     <div id="root">
       <div id="sport-count-section">
       {% for sport_info in sport_info_list %}
-      <a href="#">
+      <a href="/events?sport_type={{ sport_info.name }}">
         <div class="sport-count">
           <h1>{{ sport_info.name }}</h1>
           <h2>{{ sport_info.event_count }} Events</h2>

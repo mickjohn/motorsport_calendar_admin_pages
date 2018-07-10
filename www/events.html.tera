@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="stylesheet" href="/css/events.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <title>MJ Admin</title>
+  </head>
+  <body>
+    <!-- include header include -->
+    {% include "inc_header" %}
+
+    <!-- include sidebar include -->
+    {% include "inc_sidebar" %}
+
+    <div id="root">
+      <table class="events-table">
+        <tr>
+          <th> Sport </th>
+          <th> Round </th>
+          <th> Country </th>
+          <th> Location </th>
+          <th> Edit </th>
+          <th> Delete </th>
+        </tr>
+        {% for event in events %}
+        <tr>
+          <td> {{ event.sport }} </td>
+          <td> {{ event.round }} </td>
+          <td> {{ event.country }} </td>
+          <td> {{ event.location }} </td>
+          <td> <a href="/events/{{ event.id }}">✎</a> </td>
+          <td> <a>✖</a> </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </body>
+</html>

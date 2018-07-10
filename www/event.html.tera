@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="stylesheet" href="/css/event.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <title>MJ Admin</title>
+  </head>
+  <body>
+    <!-- include header include -->
+    {% include "inc_header" %}
+
+    <!-- include sidebar include -->
+    {% include "inc_sidebar" %}
+
+    <div id="root">
+      <form>
+        <div>
+        <h1> Event: </h1>
+          Event ID: {{ event.id }} </br>
+          Sport Type: <input type="text" name="sport" value="{{ event.sport }}"> </br>
+          Round: <input type="text" name="round" value="{{ event.round }}"> </br>
+          Country: <input type="text" name="country" value="{{ event.country }}"> </br>
+          Location: <input type="text" name="location" value="{{ event.location }}"> </br>
+        </div>
+
+        <!-- Event update and Add session Buttons -->
+        <span class="button-span">
+          <button class="update-event-button">
+            <h4> Update Event and Sessions </h4>
+          </button>
+          <button class="add-session-button">
+            <h4>+ Add new Session</h4>
+          </button>
+        </span>
+
+        <div class="session-box-section">
+        <h1> Sessions: </h1>
+        {% for session in event.sessions %}
+        <div class="session-box" id="session-div-{{ loop.index }}">
+          <h3>Session ID: {{ session.id }}</h3> </br>
+          <h5>Session Name: <input type="text" name="name-{{ loop.index }}" value="{{ session.name }}"></h5>
+          <h5>Session Date: <input type="text" name="date-{{ loop.index }}" value="{{ session.date }}"></h5>
+          <h5>Session Time: <input type="text" name="time-{{ loop.index }}" value="{{ session.time }}"></h5>
+        </div>
+        {% endfor %}
+        </div>
+
+        <!-- Event update and Add session Buttons -->
+        <span class="button-span">
+          <button class="update-event-button">
+            <h4> Update Event and Sessions </h4>
+          </button>
+          <button class="add-session-button">
+            <h4>+ Add new Session</h4>
+          </button>
+        </span>
+      </form>
+
+      {#<!-- <table class="sessions-table"> -->
+      <!--   <tr> -->
+      <!--     <th> Name </th> -->
+      <!--     <th> Date </th> -->
+      <!--     <th> Time </th> -->
+      <!--   </tr> -->
+      <!--   {% for session in event.sessions %} -->
+      <!--   <tr> -->
+      <!--     <td> {{ session.name }} </td> -->
+      <!--     <td> {{ session.date }} </td> -->
+      <!--     <td> {{ session.time }} </td> -->
+      <!--     <td> <a href="/events/{{ event.id }}/sessions/{{ session.id }}">✎</a> </td> -->
+      <!--     <td> <a>✖</a> </td> -->
+      <!--   </tr> -->
+      <!--   {% endfor %} -->
+      <!-- </table> -->#}
+    </div>
+  </body>
+</html>

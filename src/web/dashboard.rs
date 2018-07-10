@@ -1,4 +1,3 @@
-// use super::log;
 use client::Client;
 use motorsport_calendar_common::event::Event;
 use rocket::http::Cookies;
@@ -21,8 +20,6 @@ struct SportInfo {
 pub fn dashboard(mut cookies: Cookies, config: State<WebConfig>) -> Result<Template, Redirect> {
     web::get_sesssion_from_cookies(&mut cookies)
         .map(|session| {
-            debug!("Found session cookie!");
-            debug!("Renewing session cookie!");
             let new_session = web::renew_session(&mut cookies, session);
             let mut context = Context::new();
             context.add("username", &new_session.get_user().username);

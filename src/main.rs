@@ -37,15 +37,8 @@ mod web;
 use std::path::Path;
 
 fn main() {
-    // let client = client::Client::new(api_url, user);
-
-    // let event = client.get_event(&1);
-    // println!("{:?}", event);
-
-    // env_logger::init();
     let config_path = Path::new("config.toml");
     let config = config::Config::from_toml_file(&config_path).unwrap();
-
     let wc = web::WebConfig::from(&config);
     web::start(wc);
 }

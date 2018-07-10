@@ -16,6 +16,9 @@ use std::sync::RwLock;
 use std::{thread, time};
 
 mod dashboard;
+mod event;
+mod events;
+// mod session;
 mod login;
 
 lazy_static! {
@@ -87,6 +90,10 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 static_css,
                 static_js,
                 index,
+                events::get_events,
+                events::get_events_query,
+                event::get_event,
+                event::get_session,
                 dashboard::dashboard,
                 login::login_page_flash_message,
                 login::login_page,
@@ -103,14 +110,6 @@ pub fn start(web_config: WebConfig) {
 }
 
 fn get_sesssion_from_cookies(cookies: &mut Cookies) -> Option<Session> {
-    // Adding extra scope to limit the read lock
-    // let session = {
-    //     let session_map = SESSION_MAP.read().unwrap();
-    //     cookies
-    //         .get_private(session::SESSION_COOKIE_NAME)
-    //         .and_then(|session_cookie| session_map.get(session_cookie.value()).cloned())
-    // };
-    // session
     let session_map = SESSION_MAP.read().unwrap();
     cookies
         .get_private(session::SESSION_COOKIE_NAME)

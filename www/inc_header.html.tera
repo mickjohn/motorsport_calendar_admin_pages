@@ -1,3 +1,6 @@
+    {# This template require the following variables to be defined in the 
+       context:
+       - username: String #}
     <header class="header">
       <span>
         <h1>Mickjohn.com Admin Pages</h1>

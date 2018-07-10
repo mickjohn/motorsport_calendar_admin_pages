@@ -1,4 +1,5 @@
 use motorsport_calendar_common::event::Event;
+use motorsport_calendar_common::event::Session as ApiSession;
 use reqwest::header::{Authorization, Basic, ContentType, Headers};
 use reqwest::Client as ReqwestClient;
 use reqwest::ClientBuilder;
@@ -42,10 +43,7 @@ pub struct Client {
 
 impl Client {
     pub fn new(api_url: String, user: Uwpp) -> Self {
-        Client {
-            api_url,
-            user,
-        }
+        Client { api_url, user }
     }
 
     fn http_client(&self) -> Result<ReqwestClient, Error> {
@@ -84,6 +82,18 @@ impl Client {
         let text = response.text()?;
         let event: Event = serde_json::from_str(&text)?;
         Ok(event)
+    }
+
+    pub fn get_session(&self, event_id: i32, session_id: i32) -> Result<ApiSession, Error> {
+        let client = self.http_client()?;
+        let url = format!(
+            "{}/events/{}/sessions/{}",
+            self.api_url, event_id, session_id
+        );
+        let mut response = client.get(&url).send()?;
+        let text = response.text()?;
+        let session: ApiSession = serde_json::from_str(&text)?;
+        Ok(session)
     }
 
     pub fn authenticate(&self) -> Result<(), Error> {
