@@ -23,7 +23,7 @@ toml = "0.4"
 [dependencies.rocket_contrib]
 version = "0.3.14"
 default-features = false
-features = ["tera_templates"]
+features = ["tera_templates", "json"]
 
 [dependencies.motorsport_calendar_common]
 path = "/home/mick/Programs/rust/motorsport_calendar_common"

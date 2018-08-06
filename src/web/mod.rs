@@ -1,25 +1,22 @@
 use super::config;
-// use super::env_log;
 use super::session::Session;
 use chrono::prelude::*;
 use rocket;
 use rocket::http::{Cookie, Cookies};
-use rocket::response::NamedFile;
 use rocket::response::Redirect;
 use rocket::{Rocket, State};
 use rocket_contrib::Template;
 use session;
 
 use std::collections::HashMap;
-use std::path::{Path, PathBuf};
 use std::sync::RwLock;
 use std::{thread, time};
 
 mod dashboard;
-mod event;
 mod events;
-// mod session;
 mod login;
+mod static_routes;
+mod update;
 
 lazy_static! {
     static ref SESSION_MAP: RwLock<HashMap<String, Session>> = RwLock::new(HashMap::new());
@@ -43,29 +40,6 @@ impl<'a> From<&'a config::Config> for WebConfig {
     }
 }
 
-#[get("/css/<file..>")]
-fn static_css(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
-    NamedFile::open(
-        Path::new(&config.content_root)
-            .join(&config.css_root)
-            .join(file),
-    ).ok()
-}
-
-#[get("/js/<file..>")]
-fn static_js(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
-    NamedFile::open(
-        Path::new(&config.content_root)
-            .join(&config.js_root)
-            .join(file),
-    ).ok()
-}
-
-#[get("/")]
-fn index(cookies: Cookies, config: State<WebConfig>) -> Result<Template, Redirect> {
-    dashboard::dashboard(cookies, config)
-}
-
 fn clean_expired_cookies() {
     let now = Utc::now();
     SESSION_MAP
@@ -87,18 +61,20 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
         .mount(
             "/",
             routes![
-                static_css,
-                static_js,
-                index,
+                static_routes::static_css,
+                static_routes::static_js,
+                static_routes::index,
+                static_routes::internal_server_error,
                 events::get_events,
                 events::get_events_query,
-                event::get_event,
-                event::get_session,
+                events::get_event,
+                events::get_session,
                 dashboard::dashboard,
                 login::login_page_flash_message,
                 login::login_page,
                 login::login_user,
                 login::logout_user,
+                update::update_events_and_sessions,
             ],
         )
         .attach(Template::fairing())

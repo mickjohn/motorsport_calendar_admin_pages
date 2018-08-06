@@ -30,6 +30,7 @@ extern crate failure;
 
 mod client;
 mod config;
+mod model;
 mod session;
 mod user;
 mod web;

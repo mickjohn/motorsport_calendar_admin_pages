@@ -2,7 +2,10 @@ use chrono::prelude::*;
 use chrono::Duration;
 use rand::distributions::*;
 use rand::{thread_rng, Rng};
+use std::collections::HashMap;
 use std::iter;
+use std::sync::RwLock;
+use std::{thread, time};
 use user::UserWithPlaintextPassword;
 
 const SESSION_ID_LEN: &usize = &64;
@@ -60,31 +63,42 @@ impl Session {
     }
 }
 
-// #[derive(Debug)]
-// pub struct LocalSessionDb {
-//     session_map: HashMap<String, Session>,
-// }
+#[derive(Debug)]
+pub struct SessionStore {
+    store: RwLock<HashMap<String, Session>>,
+}
 
-// impl LocalSessionDb {
-//     pub fn new() -> LocalSessionDb {
-//         LocalSessionDb {
-//             session_map: HashMap::new(),
-//         }
-//     }
+impl SessionStore {
+    pub fn new() -> Self {
+        SessionStore {
+            store: RwLock::new(HashMap::new()),
+        }
+    }
 
-//     pub fn add_session(&mut self, session: Session) {
-//         let key = session.id.clone();
-//         self.session_map.insert(key, session);
-//     }
+    pub fn add(&mut self, s: Session) {
+        let k = s.get_id().to_string();
+        self.store.write().unwrap().insert(k, s);
+    }
 
-//     pub fn remove_session(&mut self, session_id: String) {
-//         self.session_map.remove(&session_id);
-//     }
+    pub fn remove(&mut self, sid: &str) {
+        self.store.write().unwrap().remove(sid);
+    }
 
-//     pub fn get_session(self, session_id: String) -> Option<Session> {
-//         match self.session_map.get(&session_id) {
-//             None => None,
-//             Some(s) => Some(s.clone()),
-//         }
-//     }
-// }
+    pub fn renew(&mut self, old_session: Session) -> Session {
+        let old_session_id = old_session.get_id().to_string();
+        let new_session = old_session.renew();
+        let new_id = new_session.get_id().to_string();
+        let mut store = self.store.write().unwrap();
+        store.insert(new_id, new_session.clone());
+        store.remove(&old_session_id);
+        new_session
+    }
+
+    fn clean(&mut self) {
+        let now = Utc::now();
+        self.store
+            .write()
+            .unwrap()
+            .retain(|_, ref mut v| v.get_expires() >= &now);
+    }
+}

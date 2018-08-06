@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
+    <script src="/js/event.js"></script> 
     <link rel="stylesheet" href="/css/event.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/sidebar.css">
@@ -18,64 +19,41 @@
 
     <div id="root">
       <form>
-        <div>
         <h1> Event: </h1>
-          Event ID: {{ event.id }} </br>
-          Sport Type: <input type="text" name="sport" value="{{ event.sport }}"> </br>
-          Round: <input type="text" name="round" value="{{ event.round }}"> </br>
-          Country: <input type="text" name="country" value="{{ event.country }}"> </br>
-          Location: <input type="text" name="location" value="{{ event.location }}"> </br>
+        <div class="event-box">
+          <h3> Event ID: {{ event.id }}</h3>
+          <h5> Sport Type: <input id="event_sport" type="text" name="sport" value="{{ event.sport }}"> </h5>
+          <h5> Round: <input id="event_round" type="text" name="round" value="{{ event.round }}"> </h5>
+          <h5> Country: <input id="event_country" type="text" name="country" value="{{ event.country }}"> </h5>
+          <h5> Location: <input id="event_location" type="text" name="location" value="{{ event.location }}"> </h5>
         </div>
 
         <!-- Event update and Add session Buttons -->
+        <!-- It's all on one line because otherwise invisible whitespace nodes show up -->
+        <br>
         <span class="button-span">
-          <button class="update-event-button">
-            <h4> Update Event and Sessions </h4>
-          </button>
-          <button class="add-session-button">
-            <h4>+ Add new Session</h4>
-          </button>
+          <button type="button" class="update-event-button"> <h4> Update Event and Sessions </h4> </button><button type="button" class="add-session-button"> <h4> + Add new Session </h4> </button>
         </span>
 
         <div class="session-box-section">
-        <h1> Sessions: </h1>
-        {% for session in event.sessions %}
-        <div class="session-box" id="session-div-{{ loop.index }}">
-          <h3>Session ID: {{ session.id }}</h3> </br>
-          <h5>Session Name: <input type="text" name="name-{{ loop.index }}" value="{{ session.name }}"></h5>
-          <h5>Session Date: <input type="text" name="date-{{ loop.index }}" value="{{ session.date }}"></h5>
-          <h5>Session Time: <input type="text" name="time-{{ loop.index }}" value="{{ session.time }}"></h5>
-        </div>
-        {% endfor %}
+          <h1> Sessions: </h1>
+          {% for session in event.sessions %}
+          <div class="session-box" id="session-div-{{ loop.index }}">
+            <h3 id="session_id-{{ loop.index }}">Session ID: {{ session.id }}</h3> <br>
+            <h5>Session Name: <input class="session-name-input" id="session_name-{{ loop.index }}" type="text" name="name-{{ loop.index }}" value="{{ session.name }}"></h5>
+            <p class="error session-name-error"></p>
+            <h5>Session Time: <input class="session-time-input" id="session_time-{{ loop.index }}" type="text" name="time-{{ loop.index }}" value="{{ session.time }}"></h5>
+            <p class="error session-time-error"></p>
+          </div>
+          {% endfor %}
         </div>
 
         <!-- Event update and Add session Buttons -->
+        <!-- It's all on one line because otherwise invisible whitespace nodes show up -->
         <span class="button-span">
-          <button class="update-event-button">
-            <h4> Update Event and Sessions </h4>
-          </button>
-          <button class="add-session-button">
-            <h4>+ Add new Session</h4>
-          </button>
+          <button type="button" class="update-event-button"> <h4> Update Event and Sessions </h4> </button><button type="button" class="add-session-button"> <h4> + Add new Session </h4> </button>
         </span>
       </form>
-
-      {#<!-- <table class="sessions-table"> -->
-      <!--   <tr> -->
-      <!--     <th> Name </th> -->
-      <!--     <th> Date </th> -->
-      <!--     <th> Time </th> -->
-      <!--   </tr> -->
-      <!--   {% for session in event.sessions %} -->
-      <!--   <tr> -->
-      <!--     <td> {{ session.name }} </td> -->
-      <!--     <td> {{ session.date }} </td> -->
-      <!--     <td> {{ session.time }} </td> -->
-      <!--     <td> <a href="/events/{{ event.id }}/sessions/{{ session.id }}">✎</a> </td> -->
-      <!--     <td> <a>✖</a> </td> -->
-      <!--   </tr> -->
-      <!--   {% endfor %} -->
-      <!-- </table> -->#}
     </div>
   </body>
 </html>

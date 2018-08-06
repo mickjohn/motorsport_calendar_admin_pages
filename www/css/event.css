@@ -35,12 +35,36 @@ body {
 /* } */
 /* end table */
 
+/* Event Box */
+.event-box {
+  display: inline-block;
+  margin: 0.8em;
+  color: #484848;
+  background-color: #afdeb6;
+  text-align: center;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  width: 20em;
+}
+
+.event-box-section a, u {
+    text-decoration: none;
+}
+
+.event-box h3,h5,input {
+  margin: 0;
+  padding: 0.3em;
+}
+/* End Event Box */
+
+
 /* Session box*/
 .session-box {
   display: inline-block;
   margin: 0.8em;
   color: #484848;
-  background-color: #fff;
+  background-color: #afc2de;
+  /* background-color: #fff; */
   text-align: center;
   padding-top: 2em;
   padding-bottom: 2em;
@@ -53,9 +77,9 @@ body {
 
 .session-box h1,h2,h3,h4,h5,input {
   margin: 0;
-  padding: 0.3em;
+  /* padding: 0.3em; */
 }
-/* End session box*/
+/* End session box */
 
 /* Buttons */
 .button-span button {
@@ -64,6 +88,7 @@ body {
   padding: 1em;
   border: 2px;
   border-radius: 2px;
+  cursor:pointer;
 }
 
 .update-event-button {
@@ -78,3 +103,12 @@ body {
   color: white;
 }
 /* End Buttons */
+
+/* Form Error */
+.error {
+  font-size: 0.8em;
+  color: red;
+  margin: 0;
+  padding: 0;
+}
+/* End Form Error*/
