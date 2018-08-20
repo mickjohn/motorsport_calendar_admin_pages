@@ -1,16 +1,14 @@
 use super::config;
-use super::session::Session;
-use chrono::prelude::*;
+use super::session::{Session, SessionStore};
 use rocket;
 use rocket::http::{Cookie, Cookies};
-use rocket::response::Redirect;
-use rocket::{Rocket, State};
+use rocket::Rocket;
 use rocket_contrib::Template;
 use session;
 
-use std::collections::HashMap;
-use std::sync::RwLock;
-use std::{thread, time};
+use std::sync::{Arc, RwLock};
+use std::thread;
+use std::time::Duration;
 
 mod dashboard;
 mod events;
@@ -18,15 +16,15 @@ mod login;
 mod static_routes;
 mod update;
 
-lazy_static! {
-    static ref SESSION_MAP: RwLock<HashMap<String, Session>> = RwLock::new(HashMap::new());
-}
+type SessionStoreArc = Arc<RwLock<SessionStore>>;
 
+#[derive(Debug)]
 pub struct WebConfig {
     content_root: String,
     css_root: String,
     js_root: String,
     api_url: String,
+    cookie_cleaner_interval_seconds: u64,
 }
 
 impl<'a> From<&'a config::Config> for WebConfig {
@@ -36,27 +34,28 @@ impl<'a> From<&'a config::Config> for WebConfig {
             css_root: c.css_root.clone(),
             js_root: c.js_root.clone(),
             api_url: format!("{}:{}", c.api_server_host, c.api_server_port).to_string(),
+            cookie_cleaner_interval_seconds: c.cookie_cleaner_interval_seconds,
         }
     }
 }
 
-fn clean_expired_cookies() {
-    let now = Utc::now();
-    SESSION_MAP
-        .write()
-        .unwrap()
-        .retain(|_, ref mut v| v.get_expires() >= &now);
-}
-
 fn init_rocket(web_config: WebConfig) -> Rocket {
-    // Logging framework not init at this point
-    // that's why I'm using println
-    println!("Starting cookie cleaner thread");
-    thread::spawn(move || loop {
-        clean_expired_cookies();
-        thread::sleep(time::Duration::from_secs(5));
-    });
+    info!("Web config is as follows:\n{:#?}", web_config);
+    // Use Arc to manage shared mutiple state.
+    let session_store = Arc::new(RwLock::new(SessionStore::new()));
+    let session_store_for_thread = Arc::clone(&session_store);
 
+    info!("Starting up cookie cleaner thread");
+    let interval = Duration::from_secs(web_config.cookie_cleaner_interval_seconds);
+    thread::Builder::new()
+        .name("cookie_cleaner".to_string())
+        .spawn(move || loop {
+            session_store_for_thread.write().unwrap().clean();
+            thread::sleep(interval);
+        })
+        .unwrap();
+
+    info!("Launching Rocket...");
     rocket::ignite()
         .mount(
             "/",
@@ -79,24 +78,30 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
         )
         .attach(Template::fairing())
         .manage(web_config)
+        .manage(session_store)
 }
 
 pub fn start(web_config: WebConfig) {
     init_rocket(web_config).launch();
 }
 
-fn get_sesssion_from_cookies(cookies: &mut Cookies) -> Option<Session> {
-    let session_map = SESSION_MAP.read().unwrap();
+fn get_sesssion_from_cookies(
+    cookies: &mut Cookies,
+    session_store: &SessionStore,
+) -> Option<Session> {
     cookies
         .get_private(session::SESSION_COOKIE_NAME)
-        .and_then(|session_cookie| session_map.get(session_cookie.value()).cloned())
+        .and_then(|session_cookie| session_store.get(session_cookie.value()).cloned())
 }
 
-fn renew_session(cookies: &mut Cookies, session: Session) -> Session {
-    let old_session_id = session.get_id().to_string();
-    let new_session = session.renew();
-    cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
+fn renew_session(
+    cookies: &mut Cookies,
+    session_store: &mut SessionStore,
+    session: Session,
+) -> Session {
+    let new_session = session_store.renew(session);
 
+    cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
     let cookie_string = format!(
         "{}={}; HttpOnly; Secure; Expires={}; path=/",
         session::SESSION_COOKIE_NAME,
@@ -106,14 +111,9 @@ fn renew_session(cookies: &mut Cookies, session: Session) -> Session {
     let cookie = Cookie::parse(cookie_string).unwrap();
     cookies.add_private(cookie);
 
-    let key = new_session.get_id().to_string();
     info!(
         "session renewed for user {}",
         new_session.get_user().username
     );
-
-    let mut session_map = SESSION_MAP.write().unwrap();
-    session_map.insert(key, new_session.clone());
-    session_map.remove(&old_session_id);
     new_session
 }

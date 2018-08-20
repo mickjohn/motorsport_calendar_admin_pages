@@ -1,7 +1,7 @@
 use super::dashboard;
-use super::WebConfig;
+use super::{SessionStoreArc, WebConfig};
 
-use rocket::http::{Cookie, Cookies};
+use rocket::http::Cookies;
 use rocket::request::FlashMessage;
 use rocket::response::NamedFile;
 use rocket::response::Redirect;
@@ -30,8 +30,12 @@ fn static_js(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
 }
 
 #[get("/")]
-fn index(cookies: Cookies, config: State<WebConfig>) -> Result<Template, Redirect> {
-    dashboard::dashboard(cookies, config)
+fn index(
+    cookies: Cookies,
+    config: State<WebConfig>,
+    session_store: State<SessionStoreArc>,
+) -> Result<Template, Redirect> {
+    dashboard::dashboard(cookies, config, session_store)
 }
 
 #[get("/500_error.html")]

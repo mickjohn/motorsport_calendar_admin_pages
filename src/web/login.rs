@@ -6,9 +6,10 @@ use rocket::request::{FlashMessage, Form};
 use rocket::response::{Flash, Redirect};
 use rocket::State;
 use rocket_contrib::Template;
-use session::{self, Session};
+use session::{self, Session, SessionStore};
 use std::collections::HashMap;
 use web;
+use web::SessionStoreArc;
 
 // Render page with flash message, e.g. 'incorrect username or pass',
 // or 'you must be logged in to view this page'
@@ -22,8 +23,12 @@ pub fn login_page_flash_message(flash: Option<FlashMessage>) -> Template {
 }
 
 #[get("/login", rank = 2)]
-pub fn login_page(mut cookies: Cookies) -> Result<Template, Redirect> {
-    web::get_sesssion_from_cookies(&mut cookies)
+pub fn login_page(
+    mut cookies: Cookies,
+    session_store: State<SessionStoreArc>,
+) -> Result<Template, Redirect> {
+    let session_store = session_store.read().unwrap();
+    web::get_sesssion_from_cookies(&mut cookies, &session_store)
         .map(|session| {
             debug!("Found session cookie!");
             let mut context = HashMap::new();
@@ -44,13 +49,15 @@ fn login_user(
     mut cookies: Cookies,
     user_data: Form<UserWithPlaintextPassword>,
     config: State<WebConfig>,
+    session_store: State<SessionStoreArc>,
 ) -> Result<Redirect, Flash<Redirect>> {
+    let mut session_store = session_store.write().unwrap();
     let user = user_data.into_inner();
     let login_result = Client::new(config.api_url.clone(), user.clone()).authenticate();
     match login_result {
         Ok(()) => {
             info!("{} validated, creating session...", user.username);
-            create_session(user, &mut cookies);
+            create_session(user, &mut cookies, &mut session_store);
             Ok(Redirect::to("/dashboard"))
         }
         Err(_) => {
@@ -64,17 +71,21 @@ fn login_user(
 }
 
 #[get("/logout")]
-fn logout_user(mut cookies: Cookies) -> Flash<Redirect> {
-    if let Some(session) = web::get_sesssion_from_cookies(&mut cookies) {
+fn logout_user(mut cookies: Cookies, session_store: State<SessionStoreArc>) -> Flash<Redirect> {
+    let mut session_store = session_store.write().unwrap();
+    if let Some(session) = web::get_sesssion_from_cookies(&mut cookies, &session_store) {
         debug!("Found session cookie, loging out user");
-        let mut session_map = web::SESSION_MAP.write().unwrap();
-        session_map.remove(&session.get_id().to_string());
+        session_store.remove(&session.get_id().to_string());
         cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
     }
     Flash::success(Redirect::to("/"), "Successfully logged out.")
 }
 
-fn create_session(user: UserWithPlaintextPassword, cookies: &mut Cookies) {
+fn create_session(
+    user: UserWithPlaintextPassword,
+    cookies: &mut Cookies,
+    session_store: &mut SessionStore,
+) {
     let session = Session::new_with_user(user);
     let cookie_string = format!(
         "{}={}; HttpOnly; Secure; Expires={}; path=/",
@@ -82,8 +93,8 @@ fn create_session(user: UserWithPlaintextPassword, cookies: &mut Cookies) {
         session.get_id().to_string(),
         session.get_expires_date_string(),
     );
-    cookies.add_private(Cookie::parse(cookie_string).unwrap());
-    let k = session.get_id().to_string();
+    let cookie = Cookie::parse(cookie_string).unwrap();
+    cookies.add_private(cookie);
     info!("session created for user {}", session.get_user().username);
-    web::SESSION_MAP.write().unwrap().insert(k, session);
+    session_store.add(session);
 }

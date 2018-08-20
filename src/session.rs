@@ -4,8 +4,6 @@ use rand::distributions::*;
 use rand::{thread_rng, Rng};
 use std::collections::HashMap;
 use std::iter;
-use std::sync::RwLock;
-use std::{thread, time};
 use user::UserWithPlaintextPassword;
 
 const SESSION_ID_LEN: &usize = &64;
@@ -61,44 +59,74 @@ impl Session {
             .take(*SESSION_ID_LEN)
             .collect::<String>()
     }
+
+    // pub fn create_session_cookie(&self) -> Cookie {
+    //     let expiry = Tm {
+    //         tm_sec: self.expires.second() as i32,
+    //         tm_min: self.expires.minute() as i32,
+    //         tm_hour: self.expires.hour() as i32,
+    //         tm_mday: self.expires.day() as i32,
+    //         tm_mon: self.expires.month0() as i32,
+    //         tm_year: self.expires.year() as i32,
+    //         tm_wday: self.expires.weekday().num_days_from_monday() as i32,
+    //         tm_yday: self.expires.ordinal() as i32,
+    //         tm_isdst: -1,
+    //         tm_utcoff: 0,
+    //         tm_nsec: 0,
+    //     };
+
+    //     Cookie::build(SESSION_COOKIE_NAME, "123")
+    //         .http_only(true)
+    //         .secure(true)
+    //         .expires(cxpiry)
+    //         .path("/")
+    //         .finish()
+    // }
 }
 
 #[derive(Debug)]
 pub struct SessionStore {
-    store: RwLock<HashMap<String, Session>>,
+    store: HashMap<String, Session>,
 }
 
 impl SessionStore {
     pub fn new() -> Self {
         SessionStore {
-            store: RwLock::new(HashMap::new()),
+            store: HashMap::new(),
         }
     }
 
     pub fn add(&mut self, s: Session) {
         let k = s.get_id().to_string();
-        self.store.write().unwrap().insert(k, s);
+        self.store.insert(k, s);
     }
 
     pub fn remove(&mut self, sid: &str) {
-        self.store.write().unwrap().remove(sid);
+        self.store.remove(sid);
+    }
+
+    pub fn get(&self, sid: &str) -> Option<&Session> {
+        self.store.get(sid)
     }
 
     pub fn renew(&mut self, old_session: Session) -> Session {
         let old_session_id = old_session.get_id().to_string();
         let new_session = old_session.renew();
         let new_id = new_session.get_id().to_string();
-        let mut store = self.store.write().unwrap();
-        store.insert(new_id, new_session.clone());
-        store.remove(&old_session_id);
+        self.store.insert(new_id, new_session.clone());
+        self.store.remove(&old_session_id);
         new_session
     }
 
-    fn clean(&mut self) {
+    pub fn clean(&mut self) {
         let now = Utc::now();
-        self.store
-            .write()
-            .unwrap()
-            .retain(|_, ref mut v| v.get_expires() >= &now);
+        self.store.retain(|_, ref mut v| {
+            if v.get_expires() >= &now {
+                true
+            } else {
+                info!("Removing expired session {}", v.get_id());
+                false
+            }
+        });
     }
 }

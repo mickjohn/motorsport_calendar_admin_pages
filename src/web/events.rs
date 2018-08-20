@@ -5,7 +5,7 @@ use rocket::State;
 use rocket_contrib::Template;
 use tera::Context;
 use web;
-use web::WebConfig;
+use web::{SessionStoreArc, WebConfig};
 
 #[derive(FromForm)]
 pub struct SportType {
@@ -15,12 +15,14 @@ pub struct SportType {
 #[get("/events/<event_id>")]
 pub fn get_event(
     mut cookies: Cookies,
-    config: State<WebConfig>,
     event_id: i32,
+    config: State<WebConfig>,
+    session_store: State<SessionStoreArc>,
 ) -> Result<Template, Redirect> {
-    web::get_sesssion_from_cookies(&mut cookies)
+    let mut session_store = session_store.write().unwrap();
+    web::get_sesssion_from_cookies(&mut cookies, &session_store)
         .map(|session| {
-            let new_session = web::renew_session(&mut cookies, session);
+            let new_session = web::renew_session(&mut cookies, &mut session_store, session);
             let mut context = Context::new();
             context.add("username", &new_session.get_user().username);
 
@@ -33,10 +35,15 @@ pub fn get_event(
 }
 
 #[get("/events")]
-pub fn get_events(mut cookies: Cookies, config: State<WebConfig>) -> Result<Template, Redirect> {
-    web::get_sesssion_from_cookies(&mut cookies)
+pub fn get_events(
+    mut cookies: Cookies,
+    config: State<WebConfig>,
+    session_store: State<SessionStoreArc>,
+) -> Result<Template, Redirect> {
+    let mut session_store = session_store.write().unwrap();
+    web::get_sesssion_from_cookies(&mut cookies, &session_store)
         .map(|session| {
-            let new_session = web::renew_session(&mut cookies, session);
+            let new_session = web::renew_session(&mut cookies, &mut session_store, session);
             let mut context = Context::new();
             context.add("username", &new_session.get_user().username);
             let client = Client::new(config.api_url.clone(), new_session.get_user().clone());
@@ -52,10 +59,12 @@ pub fn get_events_query(
     mut cookies: Cookies,
     config: State<WebConfig>,
     sport_type: Option<SportType>,
+    session_store: State<SessionStoreArc>,
 ) -> Result<Template, Redirect> {
-    web::get_sesssion_from_cookies(&mut cookies)
+    let mut session_store = session_store.write().unwrap();
+    web::get_sesssion_from_cookies(&mut cookies, &session_store)
         .map(|session| {
-            let new_session = web::renew_session(&mut cookies, session);
+            let new_session = web::renew_session(&mut cookies, &mut session_store, session);
             let mut context = Context::new();
             context.add("username", &new_session.get_user().username);
 
@@ -78,10 +87,12 @@ pub fn get_session(
     config: State<WebConfig>,
     event_id: i32,
     session_id: i32,
+    session_store: State<SessionStoreArc>,
 ) -> Result<Template, Redirect> {
-    web::get_sesssion_from_cookies(&mut cookies)
+    let mut session_store = session_store.write().unwrap();
+    web::get_sesssion_from_cookies(&mut cookies, &session_store)
         .map(|session| {
-            let new_session = web::renew_session(&mut cookies, session);
+            let new_session = web::renew_session(&mut cookies, &mut session_store, session);
             let mut context = Context::new();
             context.add("username", &new_session.get_user().username);
 

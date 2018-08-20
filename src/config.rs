@@ -31,6 +31,7 @@ pub struct Config {
     pub content_root: String,
     pub css_root: String,
     pub js_root: String,
+    pub cookie_cleaner_interval_seconds: u64,
 }
 
 impl Config {

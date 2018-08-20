@@ -34,8 +34,8 @@ impl From<SessionUpdate> for ApiSessionUpdate {
 #[derive(Debug, Fail)]
 pub enum Error {
     #[fail(display = "You need to authenticate with Basic auth to access this resource.")]
-    LoginFail,
-    #[fail(display = "Request error")]
+    // LoginFail,
+    // #[fail(display = "Request error")]
     ReqwestError(ReqwestError),
 
     #[fail(display = "Serde json error")]
@@ -140,7 +140,7 @@ impl Client {
         }
     }
 
-    pub fn update_event(&self, updated_event: &EventUpdate, event_id: &i32) -> Result<(), Error> {
+    pub fn update_event(&self, updated_event: &EventUpdate, event_id: i32) -> Result<(), Error> {
         let client = self.json_http_client_with_auth()?;
         let body_string = serde_json::to_string(&updated_event).unwrap();
         let url = format!("{}/events/{}", self.api_url, event_id);
@@ -151,7 +151,7 @@ impl Client {
     pub fn update_session(
         &self,
         updated_session: SessionUpdate,
-        event_id: &i32,
+        event_id: i32,
     ) -> Result<(), Error> {
         let client = self.json_http_client_with_auth()?;
         let session_id = updated_session.id;
@@ -166,7 +166,7 @@ impl Client {
         Ok(())
     }
 
-    pub fn create_session(&self, new_session: &NewSession, event_id: &i32) -> Result<(), Error> {
+    pub fn create_session(&self, new_session: &NewSession, event_id: i32) -> Result<(), Error> {
         let client = self.json_http_client_with_auth()?;
         let body_string = serde_json::to_string(&new_session).unwrap();
         let url = format!(
