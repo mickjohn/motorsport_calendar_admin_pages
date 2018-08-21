@@ -2,7 +2,6 @@ use chrono::*;
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct EventUpdate {
-    // pub id: i32,
     pub sport: String,
     pub round: i32,
     pub country: String,

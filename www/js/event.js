@@ -66,20 +66,124 @@ function convertFormToJson() {
 }
 
 function updateEventAndSessions() {
-  var body_json = JSON.stringify(convertFormToJson());
-  var xhr = new XMLHttpRequest();
+  var json = convertFormToJson();
   var event_id = window.location.pathname.split('/')[2];
-  xhr.open("POST", '/update_events_and_sessions/' + event_id, true);
-  xhr.setRequestHeader('Content-type','application/json');
-  xhr.onload = function () {
-    console.log(xhr);
-    console.log(xhr.responseURL)
-    console.log(xhr.getAllResponseHeaders())
-    console.log(xhr.status)
-    console.log(xhr.statusText)
-    // window.location.replace(xhr.responseURL);
+  function validateSelections() {
+    var body = JSON.stringify(json);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", '/validate_selections/' + event_id, true);
+    xhr.setRequestHeader('Content-type','application/json');
+    addMessageToModel("Validating selections...");
+    xhr.onload = function () {
+      console.log(xhr);
+      if (xhr.status == 200) {
+        updateEvent();
+        addMessageToModel("All good");
+      } else {
+        addMessageToModel("Something went wrong validing the selections: " + "(" + xhr.status + ") " + xhr.response);
+      }
+      addBreakToModel();
+    };
+    xhr.send(body);
   };
-  xhr.send(body_json);
+
+  function updateEvent() {
+    var event = JSON.stringify(json.updated_event);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", '/update_event/' + event_id, true);
+    xhr.setRequestHeader('Content-type','application/json');
+    addMessageToModel("Updating event...");
+    xhr.onload = function () {
+      console.log(xhr);
+      if (xhr.status == 200) {
+        addMessageToModel("Event Updated!!!");
+        updateSessions();
+      } else {
+        addMessageToModel("Something went wrong updating the event: " + "(" + xhr.status + ") " + xhr.response);
+      }
+      addBreakToModel();
+    };
+    xhr.send(event);
+  };
+
+  function updateSessions() {
+    var sessions = json.updated_sessions;
+    for (var i = 0; i < sessions.length; i++ ) {
+      var xhr = new XMLHttpRequest();
+      var session = sessions[i];
+      var body = JSON.stringify(session);
+
+      xhr.open("POST", '/update_session/' + event_id, true);
+      xhr.setRequestHeader('Content-type','application/json');
+      addMessageToModel("Updating session...");
+      xhr.onload = function () {
+        console.log(xhr);
+        if (xhr.status == 200) {
+          addMessageToModel("Session Updated!!!");
+        } else {
+          addMessageToModel("Something went wrong updating the session: " + "(" + xhr.status + ") " + xhr.response);
+        }
+        addBreakToModel();
+      };
+      xhr.send(body);
+    }
+    updateSessions();
+  };
+
+  function updateSessions() {
+    var requests = [];
+    var sessions = json.updated_sessions;
+    for (var i = 0; i < sessions.length; i++ ) {
+      var xhr = new XMLHttpRequest();
+      requests.push(xhr);
+      var session = sessions[i];
+      var body = JSON.stringify(session);
+
+      xhr.open("POST", '/update_session/' + event_id, true);
+      xhr.setRequestHeader('Content-type','application/json');
+      addMessageToModel("Creating session...");
+      xhr.onload = function () {
+        if (xhr.status == 200) {
+          addMessageToModel("Session Created!!!");
+        } else {
+          addMessageToModel("Something went wrong creating the session: " + "(" + xhr.status + ") " + xhr.response);
+        }
+        addBreakToModel();
+      };
+      xhr.send(body);
+    }
+
+    // Now wait for all requests to finish
+    var interval = setInterval(wait_for_sessions, 200);
+    function wait_for_sessions() {
+      var done = true;
+      for (var i = 0; i < requests.length; i++) {
+        var r = requests[i];
+        if (r.readyState == 4) {
+          done = false
+        }
+      }
+      if (done) {
+        console.log("All session update requests finished");
+        clearInterval(interval);
+        alert("All done!");
+      }
+    }
+  };
+
+  validateSelections();
+}
+
+function addMessageToModel(msg) {
+  var element = document.getElementsByClassName("modal-content")[0];
+  var new_element = document.createElement("p");
+  new_element.textContent = msg;
+  element.appendChild(new_element);
+}
+
+function addBreakToModel() {
+  var element = document.getElementsByClassName("modal-content")[0];
+  element.appendChild(document.createElement("br"));
 }
 
 function validateSessionNameInput(e) {
@@ -181,12 +285,12 @@ function addNewSession() {
 
 document.addEventListener('DOMContentLoaded', function () {
   // Add click listener to add session buttons
-  var update_event_buttons = document.getElementsByClassName('update-event-button');
-  for( var i = 0; i < update_event_buttons.length; i++ ) {
-    var element = update_event_buttons[i];
-    // element.addEventListener('click', convertFormToJson);
-    element.addEventListener('click', updateEventAndSessions);
-  }
+  // var update_event_buttons = document.getElementsByClassName('update-event-button');
+  // for( var i = 0; i < update_event_buttons.length; i++ ) {
+  //   var element = update_event_buttons[i];
+  //   // element.addEventListener('click', convertFormToJson);
+  //   element.addEventListener('click', updateEventAndSessions);
+  // }
 
   var add_sessions_buttons = document.getElementsByClassName('add-session-button');
   for( var i = 0; i < add_sessions_buttons.length; i++ ) {
@@ -205,4 +309,33 @@ document.addEventListener('DOMContentLoaded', function () {
     var element = sessionTimeInputs[i];
     element.addEventListener('keyup', validateSessionTimeInput);
   }
+
+  // Set up the model
+  
+  // Get the modal
+  var modal = document.getElementById('myModal');
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  var update_event_buttons = document.getElementsByClassName('update-event-button');
+  for( var i = 0; i < update_event_buttons.length; i++ ) {
+    var element = update_event_buttons[i];
+    // element.addEventListener('click', convertFormToJson);
+    element.addEventListener('click', updateEventAndSessions);
+    element.onclick = function() {
+      modal.style.display = "block";
+    }
+  }
+
+  // When the user clicks anywhere outside of the modal, close it
+  // window.onclick = function(event) {
+  //   if (event.target == modal) {
+  //     modal.style.display = "none";
+  //   }
+  // } 
 });

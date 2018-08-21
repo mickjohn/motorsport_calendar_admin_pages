@@ -73,7 +73,10 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 login::login_page,
                 login::login_user,
                 login::logout_user,
-                update::update_events_and_sessions,
+                update::validate_selections,
+                update::update_event,
+                update::update_session,
+                // update::update_events_and_sessions,
             ],
         )
         .attach(Template::fairing())

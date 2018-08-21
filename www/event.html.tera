@@ -17,6 +17,14 @@
     <!-- include sidebar include -->
     {% include "inc_sidebar" %}
 
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Submitting changes...</p>
+      </div>
+    </div>
+
     <div id="root">
       <form>
         <h1> Event: </h1>
