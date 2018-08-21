@@ -71,7 +71,14 @@ function updateEventAndSessions() {
   var event_id = window.location.pathname.split('/')[2];
   xhr.open("POST", '/update_events_and_sessions/' + event_id, true);
   xhr.setRequestHeader('Content-type','application/json');
-  xhr.onload = function () {};
+  xhr.onload = function () {
+    console.log(xhr);
+    console.log(xhr.responseURL)
+    console.log(xhr.getAllResponseHeaders())
+    console.log(xhr.status)
+    console.log(xhr.statusText)
+    // window.location.replace(xhr.responseURL);
+  };
   xhr.send(body_json);
 }
 
@@ -100,6 +107,24 @@ function validateSessionTimeInput(e) {
 }
 
 function validateForm() {}
+
+// function create_and_submit_hidden_form(json, event_id) {
+//   var parent = document.getElementsByTagName("body")[0];
+//   var form = document.createElement("form");
+//   form.method = "post";
+//   form.action = "/update_events_and_sessions/" + event_id;
+
+//   var input = document.createElement("input");
+//   input.type = "submit";
+//   input.value = json;
+
+//   form.appendChild(input);
+//   console.log(parent);
+//   console.log(form);
+
+//   parent.appendChild(form);
+//   form.submit();
+// }
 
 function addNewSession() {
   var parent = document.getElementsByClassName("session-box-section")[0];
