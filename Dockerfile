@@ -10,14 +10,10 @@ COPY docker_config.toml .
 
 WORKDIR /usr/bin
 COPY docker_config.toml config.toml
-
-WORKDIR /var/motorsport_calendar_admin/
-COPY www www
-
-WORKDIR /usr/bin
 COPY target/release/motorsport_calendar_admin_pages .
 
 WORKDIR /var/motorsport_calendar_admin/
+COPY www www
 COPY certs certs
 
 WORKDIR /usr/bin

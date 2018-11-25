@@ -26,4 +26,5 @@ default-features = false
 features = ["tera_templates", "json"]
 
 [dependencies.motorsport_calendar_common]
-path = "/home/mick/Programs/rust/motorsport_calendar_common"
+git = "https://github.com/mickjohn/motorsport_calendar_common.git"
+
