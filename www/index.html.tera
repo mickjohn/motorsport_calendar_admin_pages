@@ -27,10 +27,10 @@
       <h2>Login to mickjohn.com</h2>
       <form id="form-login" action="/login" method="post">
         <b>username:</b>
-        <input type="text" name="username" value="mickjohn">
+        <input type="text" name="username">
         <br>
         <b>password:</b>
-        <input type="password" name="password" value="qwerty">
+        <input type="password" name="password">
         <br>
         <input id="submit" type="submit" value="login">
       </form>

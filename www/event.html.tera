@@ -17,16 +17,12 @@
     <!-- include sidebar include -->
     {% include "inc_sidebar" %}
 
-    <div id="myModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Submitting changes...</p>
-      </div>
-    </div>
+    {% if flash %}
+    <h1> {{ flash }} </h1>
+    {% endif %}
 
     <div id="root">
-      <form>
+      <form method="post" action="/events/{{ event.id }}">
         <h1> Event: </h1>
         <div class="event-box">
           <h3> Event ID: {{ event.id }}</h3>
@@ -35,33 +31,27 @@
           <h5> Country: <input id="event_country" type="text" name="country" value="{{ event.country }}"> </h5>
           <h5> Location: <input id="event_location" type="text" name="location" value="{{ event.location }}"> </h5>
         </div>
-
-        <!-- Event update and Add session Buttons -->
-        <!-- It's all on one line because otherwise invisible whitespace nodes show up -->
-        <br>
-        <span class="button-span">
-          <button type="button" class="update-event-button"> <h4> Update Event and Sessions </h4> </button><button type="button" class="add-session-button"> <h4> + Add new Session </h4> </button>
-        </span>
-
-        <div class="session-box-section">
-          <h1> Sessions: </h1>
-          {% for session in event.sessions %}
-          <div class="session-box" id="session-div-{{ loop.index }}">
-            <h3 id="session_id-{{ loop.index }}">Session ID: {{ session.id }}</h3> <br>
-            <h5>Session Name: <input class="session-name-input" id="session_name-{{ loop.index }}" type="text" name="name-{{ loop.index }}" value="{{ session.name }}"></h5>
-            <p class="error session-name-error"></p>
-            <h5>Session Time: <input class="session-time-input" id="session_time-{{ loop.index }}" type="text" name="time-{{ loop.index }}" value="{{ session.time }}"></h5>
-            <p class="error session-time-error"></p>
-          </div>
-          {% endfor %}
-        </div>
-
-        <!-- Event update and Add session Buttons -->
-        <!-- It's all on one line because otherwise invisible whitespace nodes show up -->
-        <span class="button-span">
-          <button type="button" class="update-event-button"> <h4> Update Event and Sessions </h4> </button><button type="button" class="add-session-button"> <h4> + Add new Session </h4> </button>
-        </span>
+        <input type="submit" value="Update Event" class="update-event-button">
       </form>
+
+      <table class="sessions-table">
+        <tr>
+          <th> ID </th>
+          <th> Name </th>
+          <th> Time </th>
+          <th> Edit </th>
+          <th> Delete </th>
+        </tr>
+        {% for session in event.sessions %}
+        <tr>
+          <td> {{ session.id }} </td>
+          <td> {{ session.name }} </td>
+          <td> {{ session.time }} </td>
+          <td> <a href="/events/{{ event.id }}/sessions/{{ session.id }}">✎</a> </td>
+          <td> <a>✖</a> </td>
+        </tr>
+        {% endfor %}
+      </table>
     </div>
   </body>
 </html>

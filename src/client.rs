@@ -25,8 +25,8 @@ impl From<SessionUpdate> for ApiSessionUpdate {
         ApiSessionUpdate {
             id: session_update.id,
             name: session_update.name,
-            time: session_update.time.naive_utc(),
-            date: session_update.time.naive_utc(),
+            time: session_update.time.0.naive_utc(),
+            date: session_update.time.0.naive_utc(),
         }
     }
 }

@@ -27,12 +27,12 @@ pub fn dashboard(
         .map(|session| {
             let new_session = web::renew_session(&mut cookies, &mut session_store, session);
             let mut context = Context::new();
-            context.add("username", &new_session.get_user().username);
+            context.insert("username", &new_session.get_user().username);
 
             let client = Client::new(config.api_url.clone(), new_session.get_user().clone());
             let events = client.get_events().unwrap();
             let info = get_sport_info(&events);
-            context.add("sport_info_list", &info);
+            context.insert("sport_info_list", &info);
             Template::render("dashboard", &context)
         })
         .ok_or_else(|| Redirect::to("/login"))

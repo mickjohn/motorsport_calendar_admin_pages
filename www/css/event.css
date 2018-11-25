@@ -13,26 +13,26 @@ body {
 /* End Root */
 
 /* table */
-/* table { */
-/*     font-family: arial, sans-serif; */
-/*     border-collapse: collapse; */
-/*     width: 100%; */
-/* } */
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
-/* td, th { */
-/*     border: 1px solid #d8cbcb; */
-/*     /1* border: 1px solid #dddddd; *1/ */
-/*     text-align: left; */
-/*     padding: 8px; */
-/* } */
+td, th {
+    border: 1px solid #d8cbcb;
+    /* border: 1px solid #dddddd; */
+    text-align: left;
+    padding: 8px;
+}
 
-/* tr:nth-child(even) { */
-/*     background-color: #d8cbcb; */
-/* } */
+tr:nth-child(even) {
+    background-color: #d8cbcb;
+}
 
-/* tr:hover { */
-/*   background-color: #fff; */
-/* } */
+tr:hover {
+  background-color: #fff;
+}
 /* end table */
 
 /* Event Box */
@@ -82,25 +82,16 @@ body {
 /* End session box */
 
 /* Buttons */
-.button-span button {
+.update-event-button {
+  background-color: #87d787;
+  border-color: #87d787;
+  color: #303030;
   font-size: 18px;
   margin: 1em;
   padding: 1em;
   border: 2px;
   border-radius: 2px;
   cursor:pointer;
-}
-
-.update-event-button {
-  background-color: #87d787;
-  border-color: #87d787;
-  color: #303030;
-}
-
-.add-session-button {
-  background-color: #4983d6;
-  border-color: #4983d6;
-  color: white;
 }
 /* End Buttons */
 
@@ -112,43 +103,3 @@ body {
   padding: 0;
 }
 /* End Form Error*/
-
-/* Model */
- /* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-} 
-/* End Model */

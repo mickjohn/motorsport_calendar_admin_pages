@@ -18,13 +18,13 @@ pub fn get_session(
         .map(|session| {
             let new_session = web::renew_session(&mut cookies, session);
             let mut context = Context::new();
-            context.add("username", &new_session.get_user().username);
+            context.insert("username", &new_session.get_user().username);
 
             let client = Client::new(config.api_url.clone(), new_session.get_user().clone());
             let event = client.get_event(event_id).unwrap();
             let session = client.get_session(event_id, session_id).unwrap();
-            context.add("event", &session);
-            context.add("session", &session);
+            context.insert("event", &session);
+            context.insert("session", &session);
             Template::render("session", &context)
         })
         .ok_or_else(|| Redirect::to("/login"))
