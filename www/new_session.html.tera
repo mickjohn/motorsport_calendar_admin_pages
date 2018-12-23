@@ -19,7 +19,7 @@
     <div id="root">
       <form method="post" action="/events/{{ event_id }}/create_session">
         Session Name: <input type="text" name="name"> </br>
-        Session Time: <input type="text" name="time"> </br>
+        Session Time (in UTC): <input type="text" name="time" value="YYYY-MM-DDTHH:MM:SS"> </br>
         <input type="submit" value="Create">
       </form>
     </div>

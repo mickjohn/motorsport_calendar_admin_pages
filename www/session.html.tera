@@ -20,7 +20,7 @@
       <form>
         Session ID: {{ session.id }} </br>
         Session Name: <input type="text" name="name" value="{{ session.name }}"> </br>
-        Session Time: <input type="text" name="time" value="{{ session.time }}"> </br>
+        Session Time (in UTC): <input type="text" name="time" value="{{ session.time }}"> </br>
         <input type="submit" value="Update">
       </form>
     </div>
