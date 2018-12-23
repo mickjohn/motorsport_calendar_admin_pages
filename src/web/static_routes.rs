@@ -17,7 +17,8 @@ fn static_css(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
         Path::new(&config.content_root)
             .join(&config.css_root)
             .join(file),
-    ).ok()
+    )
+    .ok()
 }
 
 #[get("/js/<file..>")]
@@ -26,7 +27,8 @@ fn static_js(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
         Path::new(&config.content_root)
             .join(&config.js_root)
             .join(file),
-    ).ok()
+    )
+    .ok()
 }
 
 #[get("/")]

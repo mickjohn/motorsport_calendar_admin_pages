@@ -17,6 +17,7 @@
     {% include "inc_sidebar" %}
 
     <div id="root">
+      <a href="/events/create_event">New Event</a>
       <table class="events-table">
         <tr>
           <th> Sport </th>

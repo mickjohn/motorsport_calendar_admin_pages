@@ -32,8 +32,8 @@ fn update_event(
                 format!("Error updating event!\n{}", e),
             )
         })?;
-        Ok(Flash::success(Redirect::to(
-            &format!("/events/{}", event_id)),
+        Ok(Flash::success(
+            Redirect::to(&format!("/events/{}", event_id)),
             "Event successfully updated!",
         ))
     } else {
@@ -44,7 +44,11 @@ fn update_event(
     }
 }
 
-#[post("/update_session/<event_id>", format = "application/json", data = "<session_update>")]
+#[post(
+    "/update_session/<event_id>",
+    format = "application/json",
+    data = "<session_update>"
+)]
 fn update_session(
     mut cookies: Cookies,
     session_update: Form<SessionUpdate>,

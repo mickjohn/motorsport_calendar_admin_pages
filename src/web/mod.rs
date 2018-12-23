@@ -10,6 +10,7 @@ use std::sync::{Arc, RwLock};
 use std::thread;
 use std::time::Duration;
 
+mod create;
 mod dashboard;
 mod events;
 mod login;
@@ -75,6 +76,10 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 login::logout_user,
                 update::update_event,
                 update::update_session,
+                create::get_new_event_page,
+                create::create_event,
+                create::get_new_session_page,
+                create::create_session,
                 // update::update_events_and_sessions,
             ],
         )
