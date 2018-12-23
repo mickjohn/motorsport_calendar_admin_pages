@@ -1,10 +1,10 @@
-#![feature(plugin, decl_macro)]
-#![feature(custom_derive)]
-#![plugin(rocket_codegen)]
+#![feature(custom_attribute)]
+#![feature(proc_macro_hygiene, decl_macro)]
 
 extern crate chrono;
 extern crate rand;
 extern crate reqwest;
+#[macro_use]
 extern crate rocket;
 extern crate rocket_contrib;
 extern crate serde;
@@ -17,7 +17,6 @@ extern crate toml;
 // Logging
 #[macro_use]
 extern crate log;
-// extern crate env_logger;
 extern crate log4rs;
 
 //Common data structure

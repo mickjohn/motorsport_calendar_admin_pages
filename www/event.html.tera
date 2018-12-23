@@ -27,9 +27,10 @@
         <div class="event-box">
           <h3> Event ID: {{ event.id }}</h3>
           <h5> Sport Type: <input id="event_sport" type="text" name="sport" value="{{ event.sport }}"> </h5>
-          <h5> Round: <input id="event_round" type="text" name="round" value="{{ event.round }}"> </h5>
+          <h5> Title: <input id="event_title" type="text" name="title" value="{{ event.title }}"> </h5>
           <h5> Country: <input id="event_country" type="text" name="country" value="{{ event.country }}"> </h5>
           <h5> Location: <input id="event_location" type="text" name="location" value="{{ event.location }}"> </h5>
+          <h5> Track: <input id="event_track" type="text" name="track" value="{{ event.track }}"> </h5>
         </div>
         <input type="submit" value="Update Event" class="update-event-button">
       </form>

@@ -1,10 +1,11 @@
+use super::login;
 use client::Client;
 use model::{NewEvent, NewSession};
 use rocket::http::Cookies;
 use rocket::request::{FlashMessage, Form};
 use rocket::response::{Flash, Redirect};
 use rocket::State;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 use tera::Context;
 use web;
 use web::{SessionStoreArc, WebConfig};
@@ -26,7 +27,7 @@ pub fn get_new_event_page(
             }
             Template::render("new_event", &context)
         })
-        .ok_or_else(|| Redirect::to("/login"))
+        .ok_or_else(|| Redirect::to(uri!(login::login_page)))
 }
 
 #[post("/events", data = "<event>")]
@@ -47,17 +48,18 @@ pub fn create_event(
         let client = Client::new(config.api_url.clone(), new_session.get_user().clone());
         client.create_event(&new_event).map_err(|e| {
             Flash::error(
-                Redirect::to("/500_error.html"),
+                // Redirect::to("/500_error.html"),
+                Redirect::to(uri!(super::static_routes::internal_server_error)),
                 format!("Error updating event!\n{}", e),
             )
         })?;
         Ok(Flash::success(
-            Redirect::to(&format!("/events")),
+            Redirect::to(uri!(super::events::get_events)),
             "Event successfully created!",
         ))
     } else {
         Err(Flash::error(
-            Redirect::to("/500_error.html"),
+            Redirect::to(uri!(super::static_routes::internal_server_error)),
             "Error creating event!".to_string(),
         ))
     }
@@ -109,7 +111,7 @@ pub fn create_session(
             )
         })?;
         Ok(Flash::success(
-            Redirect::to(&format!("/events/{}", event_id)),
+            Redirect::to(uri!(super::events::get_event: event_id = event_id)),
             "Session successfully created!",
         ))
     } else {

@@ -10,7 +10,7 @@ use web;
 use web::{SessionStoreArc, WebConfig};
 
 #[post("/events/<event_id>", data = "<event>")]
-fn update_event(
+pub fn update_event(
     mut cookies: Cookies,
     event: Form<EventUpdate>,
     event_id: i32,
@@ -33,7 +33,7 @@ fn update_event(
             )
         })?;
         Ok(Flash::success(
-            Redirect::to(&format!("/events/{}", event_id)),
+            Redirect::to(uri!(super::events::get_event: event_id = event_id)),
             "Event successfully updated!",
         ))
     } else {
@@ -49,7 +49,7 @@ fn update_event(
     format = "application/json",
     data = "<session_update>"
 )]
-fn update_session(
+pub fn update_session(
     mut cookies: Cookies,
     session_update: Form<SessionUpdate>,
     event_id: i32,

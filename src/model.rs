@@ -5,9 +5,10 @@ use rocket::request::FromFormValue;
 #[derive(Debug, Clone, Deserialize, Serialize, FromForm)]
 pub struct EventUpdate {
     pub sport: String,
-    pub round: i32,
+    pub title: String,
     pub country: String,
     pub location: String,
+    pub track: String,
 }
 
 pub type NewEvent = EventUpdate;
@@ -16,7 +17,6 @@ pub type NewEvent = EventUpdate;
 pub struct SessionUpdate {
     pub id: i32,
     pub name: String,
-    // pub time: DateTime<Utc>,
     pub time: DtWrapper,
 }
 
@@ -38,6 +38,5 @@ impl<'v> FromFormValue<'v> for DtWrapper {
 #[derive(Debug, Clone, Deserialize, Serialize, FromForm)]
 pub struct NewSession {
     pub name: String,
-    pub date: String,
     pub time: String,
 }

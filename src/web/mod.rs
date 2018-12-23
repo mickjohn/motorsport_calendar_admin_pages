@@ -3,7 +3,7 @@ use super::session::{Session, SessionStore};
 use rocket;
 use rocket::http::{Cookie, Cookies};
 use rocket::Rocket;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 use session;
 
 use std::sync::{Arc, RwLock};

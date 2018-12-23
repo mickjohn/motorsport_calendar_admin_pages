@@ -1,9 +1,10 @@
 use client::Client;
 use rocket::http::Cookies;
 use rocket::request::FlashMessage;
+use rocket::request::Form;
 use rocket::response::Redirect;
 use rocket::State;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 use tera::Context;
 use web;
 use web::{SessionStoreArc, WebConfig};
@@ -59,11 +60,11 @@ pub fn get_events(
         .ok_or_else(|| Redirect::to("/login"))
 }
 
-#[get("/events?<sport_type>")]
+#[get("/events?<sport_type..>")]
 pub fn get_events_query(
     mut cookies: Cookies,
     config: State<WebConfig>,
-    sport_type: Option<SportType>,
+    sport_type: Option<Form<SportType>>,
     session_store: State<SessionStoreArc>,
 ) -> Result<Template, Redirect> {
     let mut session_store = session_store.write().unwrap();

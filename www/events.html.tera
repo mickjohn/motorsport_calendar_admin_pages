@@ -21,23 +21,26 @@
       <table class="events-table">
         <tr>
           <th> Sport </th>
-          <th> Round </th>
+          <th> Title </th>
           <th> Country </th>
           <th> Location </th>
+          <th> Track </th>
           <th> Edit </th>
           <th> Delete </th>
         </tr>
         {% for event in events %}
         <tr>
           <td> {{ event.sport }} </td>
-          <td> {{ event.round }} </td>
+          <td> {{ event.title}} </td>
           <td> {{ event.country }} </td>
           <td> {{ event.location }} </td>
+          <td> {{ event.track }} </td>
           <td> <a href="/events/{{ event.id }}">✎</a> </td>
           <td> <a>✖</a> </td>
         </tr>
         {% endfor %}
       </table>
+      <a href="/events/create_event">New Event</a>
     </div>
   </body>
 </html>

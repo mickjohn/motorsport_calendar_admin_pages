@@ -5,7 +5,7 @@ use rocket::http::{Cookie, Cookies};
 use rocket::request::{FlashMessage, Form};
 use rocket::response::{Flash, Redirect};
 use rocket::State;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 use session::{self, Session, SessionStore};
 use std::collections::HashMap;
 use web;
@@ -45,7 +45,7 @@ pub fn login_page(
 }
 
 #[post("/login", data = "<user_data>")]
-fn login_user(
+pub fn login_user(
     mut cookies: Cookies,
     user_data: Form<UserWithPlaintextPassword>,
     config: State<WebConfig>,
@@ -71,7 +71,7 @@ fn login_user(
 }
 
 #[get("/logout")]
-fn logout_user(mut cookies: Cookies, session_store: State<SessionStoreArc>) -> Flash<Redirect> {
+pub fn logout_user(mut cookies: Cookies, session_store: State<SessionStoreArc>) -> Flash<Redirect> {
     let mut session_store = session_store.write().unwrap();
     if let Some(session) = web::get_sesssion_from_cookies(&mut cookies, &session_store) {
         debug!("Found session cookie, loging out user");

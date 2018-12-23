@@ -6,13 +6,13 @@ use rocket::request::FlashMessage;
 use rocket::response::NamedFile;
 use rocket::response::Redirect;
 use rocket::State;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 #[get("/css/<file..>")]
-fn static_css(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
+pub fn static_css(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
     NamedFile::open(
         Path::new(&config.content_root)
             .join(&config.css_root)
@@ -22,7 +22,7 @@ fn static_css(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
 }
 
 #[get("/js/<file..>")]
-fn static_js(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
+pub fn static_js(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
     NamedFile::open(
         Path::new(&config.content_root)
             .join(&config.js_root)
@@ -32,7 +32,7 @@ fn static_js(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
 }
 
 #[get("/")]
-fn index(
+pub fn index(
     cookies: Cookies,
     config: State<WebConfig>,
     session_store: State<SessionStoreArc>,
@@ -41,7 +41,7 @@ fn index(
 }
 
 #[get("/500_error.html")]
-fn internal_server_error(flash: Option<FlashMessage>) -> Template {
+pub fn internal_server_error(flash: Option<FlashMessage>) -> Template {
     let mut context: HashMap<&str, &str> = HashMap::new();
     if let Some(ref flash_message) = flash {
         context.insert("flash", flash_message.msg());

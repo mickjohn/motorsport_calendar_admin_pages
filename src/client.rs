@@ -2,11 +2,12 @@ use chrono::NaiveDateTime;
 use model::*;
 use motorsport_calendar_common::event::Event;
 use motorsport_calendar_common::event::Session as ApiSession;
-use reqwest::header::{Authorization, Basic, ContentType, Headers};
+use reqwest::header;
+use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::Client as ReqwestClient;
 use reqwest::ClientBuilder;
-use reqwest::Error as ReqwestError;
 use reqwest::StatusCode;
+use reqwest::Error as ReqwestError;
 use serde_json;
 use serde_json::Error as SerdeError;
 
@@ -68,34 +69,20 @@ impl Client {
     }
 
     fn http_client(&self) -> Result<ReqwestClient, Error> {
-        let mut headers = Headers::new();
-        headers.set(ContentType::json());
+        let mut headers = HeaderMap::new();
+        headers.insert(header::CONTENT_TYPE, HeaderValue::from_static("json"));
         let client = ClientBuilder::new().default_headers(headers).build()?;
         Ok(client)
     }
 
     fn http_client_with_auth(&self) -> Result<ReqwestClient, Error> {
-        let basic = Basic {
-            username: self.user.username.clone(),
-            password: Some(self.user.password.clone()),
-        };
-
-        let mut headers = Headers::new();
-        headers.set(Authorization(basic));
-
-        let client = ClientBuilder::new().default_headers(headers).build()?;
+        let client = ClientBuilder::new().build()?;
         Ok(client)
     }
 
     fn json_http_client_with_auth(&self) -> Result<ReqwestClient, Error> {
-        let basic = Basic {
-            username: self.user.username.clone(),
-            password: Some(self.user.password.clone()),
-        };
-
-        let mut headers = Headers::new();
-        headers.set(Authorization(basic));
-        headers.set(ContentType::json());
+        let mut headers = HeaderMap::new();
+        headers.insert(header::CONTENT_TYPE, HeaderValue::from_static("json"));
         let client = ClientBuilder::new().default_headers(headers).build()?;
         Ok(client)
     }
@@ -133,9 +120,12 @@ impl Client {
     pub fn authenticate(&self) -> Result<(), Error> {
         let client = self.http_client_with_auth()?;
         let url = format!("{}/authenticate", self.api_url);
-        let response = client.post(&url).send()?;
+        let response = client
+            .post(&url)
+            .basic_auth(self.user.username.clone(), Some(self.user.password.clone()))
+            .send()?;
         match response.status() {
-            StatusCode::Ok => Ok(()),
+            StatusCode::OK => Ok(()),
             _ => Err(Error::AuthError),
         }
     }
@@ -144,7 +134,14 @@ impl Client {
         let client = self.json_http_client_with_auth()?;
         let body_string = serde_json::to_string(&updated_event).unwrap();
         let url = format!("{}/events/{}", self.api_url, event_id);
-        client.put(&url).body(body_string).send()?;
+        client
+            .put(&url)
+            .basic_auth(
+                &self.user.username.clone(),
+                Some(self.user.password.clone()),
+            )
+            .body(body_string)
+            .send()?;
         Ok(())
     }
 
@@ -162,7 +159,14 @@ impl Client {
             event_id = event_id,
             session_id = session_id,
         );
-        client.put(&url).body(body_string).send()?;
+        client
+            .put(&url)
+            .basic_auth(
+                &self.user.username.clone(),
+                Some(self.user.password.clone()),
+            )
+            .body(body_string)
+            .send()?;
         Ok(())
     }
 
@@ -175,7 +179,14 @@ impl Client {
             url = self.api_url,
             event_id = event_id,
         );
-        client.post(&url).body(body_string).send()?;
+        client
+            .post(&url)
+            .basic_auth(
+                &self.user.username.clone(),
+                Some(self.user.password.clone()),
+            )
+            .body(body_string)
+            .send()?;
         Ok(())
     }
 
@@ -183,7 +194,14 @@ impl Client {
         let client = self.json_http_client_with_auth()?;
         let body_string = serde_json::to_string(&new_event).unwrap();
         let url = format!("{}/events/create_event", self.api_url);
-        client.post(&url).body(body_string).send()?;
+        client
+            .post(&url)
+            .basic_auth(
+                &self.user.username.clone(),
+                Some(self.user.password.clone()),
+            )
+            .body(body_string)
+            .send()?;
         Ok(())
     }
 }

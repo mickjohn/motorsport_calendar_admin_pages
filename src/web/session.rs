@@ -2,7 +2,7 @@ use client::Client;
 use rocket::http::Cookies;
 use rocket::response::Redirect;
 use rocket::State;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 use tera::Context;
 use web;
 use web::WebConfig;

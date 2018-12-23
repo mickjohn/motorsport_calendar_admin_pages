@@ -19,7 +19,6 @@
     <div id="root">
       <form method="post" action="/events/{{ event_id }}/create_session">
         Session Name: <input type="text" name="name"> </br>
-        Session Date: <input type="text" name="date"> </br>
         Session Time: <input type="text" name="time"> </br>
         <input type="submit" value="Create">
       </form>

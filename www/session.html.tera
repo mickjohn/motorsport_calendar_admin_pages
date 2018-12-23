@@ -20,7 +20,6 @@
       <form>
         Session ID: {{ session.id }} </br>
         Session Name: <input type="text" name="name" value="{{ session.name }}"> </br>
-        Session Date: <input type="text" name="date" value="{{ session.date }}"> </br>
         Session Time: <input type="text" name="time" value="{{ session.time }}"> </br>
         <input type="submit" value="Update">
       </form>

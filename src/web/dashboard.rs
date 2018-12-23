@@ -3,7 +3,7 @@ use motorsport_calendar_common::event::Event;
 use rocket::http::Cookies;
 use rocket::response::Redirect;
 use rocket::State;
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 use std::collections::HashMap;
 use tera::Context;
 use web;
