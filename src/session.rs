@@ -2,9 +2,14 @@ use chrono::prelude::*;
 use chrono::Duration;
 use rand::distributions::*;
 use rand::{thread_rng, Rng};
+use rocket::http::Status;
+use rocket::outcome::Outcome::*;
+use rocket::request::{self, FromRequest, Request};
+use rocket::State;
 use std::collections::HashMap;
 use std::iter;
 use user::UserWithPlaintextPassword;
+use web;
 
 const SESSION_ID_LEN: &usize = &64;
 const SESSION_DURATION_SECS: &i64 = &(5 * 60);
@@ -59,29 +64,23 @@ impl Session {
             .take(*SESSION_ID_LEN)
             .collect::<String>()
     }
+}
 
-    // pub fn create_session_cookie(&self) -> Cookie {
-    //     let expiry = Tm {
-    //         tm_sec: self.expires.second() as i32,
-    //         tm_min: self.expires.minute() as i32,
-    //         tm_hour: self.expires.hour() as i32,
-    //         tm_mday: self.expires.day() as i32,
-    //         tm_mon: self.expires.month0() as i32,
-    //         tm_year: self.expires.year() as i32,
-    //         tm_wday: self.expires.weekday().num_days_from_monday() as i32,
-    //         tm_yday: self.expires.ordinal() as i32,
-    //         tm_isdst: -1,
-    //         tm_utcoff: 0,
-    //         tm_nsec: 0,
-    //     };
+impl<'a, 'r> FromRequest<'a, 'r> for Session {
+    type Error = ();
 
-    //     Cookie::build(SESSION_COOKIE_NAME, "123")
-    //         .http_only(true)
-    //         .secure(true)
-    //         .expires(cxpiry)
-    //         .path("/")
-    //         .finish()
-    // }
+    fn from_request(request: &'a Request<'r>) -> request::Outcome<Self, ()> {
+        match request.guard::<State<SessionStore>>() {
+            Success(session_store) => {
+                let mut cookies = request.cookies();
+                web::get_sesssion_from_cookies(&mut cookies, &session_store)
+                    .map(|session| Success(session))
+                    .unwrap_or_else(|| Failure((Status::BadRequest, ())))
+            }
+            Forward(_) => Failure((Status::BadRequest, ())),
+            Failure(_) => Failure((Status::BadRequest, ())),
+        }
+    }
 }
 
 #[derive(Debug)]

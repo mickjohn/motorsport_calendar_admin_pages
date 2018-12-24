@@ -23,25 +23,13 @@ pub fn login_page_flash_message(flash: Option<FlashMessage>) -> Template {
 }
 
 #[get("/login", rank = 2)]
-pub fn login_page(
-    mut cookies: Cookies,
-    session_store: State<SessionStoreArc>,
-) -> Result<Template, Redirect> {
-    let session_store = session_store.read().unwrap();
-    web::get_sesssion_from_cookies(&mut cookies, &session_store)
-        .map(|session| {
-            debug!("Found session cookie!");
-            let mut context = HashMap::new();
-            context.insert(
-                "username".to_string(),
-                session.get_user().username.to_string(),
-            );
-            Err(Redirect::to("/dashboard"))
-        })
-        .unwrap_or_else(|| {
-            let context: HashMap<&str, &str> = HashMap::new();
-            Ok(Template::render("index", &context))
-        })
+pub fn login_page(session: Session) -> Result<Template, Redirect> {
+    let mut context = HashMap::new();
+    context.insert(
+        "username".to_string(),
+        session.get_user().username.to_string(),
+    );
+    Err(Redirect::to("/dashboard"))
 }
 
 #[post("/login", data = "<user_data>")]

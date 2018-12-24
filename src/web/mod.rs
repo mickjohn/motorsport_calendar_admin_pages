@@ -92,7 +92,7 @@ pub fn start(web_config: WebConfig) {
     init_rocket(web_config).launch();
 }
 
-fn get_sesssion_from_cookies(
+pub fn get_sesssion_from_cookies(
     cookies: &mut Cookies,
     session_store: &SessionStore,
 ) -> Option<Session> {

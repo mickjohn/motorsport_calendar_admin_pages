@@ -6,8 +6,8 @@ use reqwest::header;
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::Client as ReqwestClient;
 use reqwest::ClientBuilder;
-use reqwest::StatusCode;
 use reqwest::Error as ReqwestError;
+use reqwest::StatusCode;
 use serde_json;
 use serde_json::Error as SerdeError;
 
