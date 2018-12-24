@@ -17,7 +17,7 @@ mod login;
 mod static_routes;
 mod update;
 
-type SessionStoreArc = Arc<RwLock<SessionStore>>;
+pub type SessionStoreArc = Arc<RwLock<SessionStore>>;
 
 #[derive(Debug)]
 pub struct WebConfig {
@@ -66,10 +66,15 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 static_routes::index,
                 static_routes::internal_server_error,
                 events::get_events,
+                events::get_events_redirect,
                 events::get_events_query,
+                events::get_events_query_redirect,
                 events::get_event,
+                events::get_event_redirect,
                 events::get_session,
+                events::get_session_redirect,
                 dashboard::dashboard,
+                dashboard::dashboard_redirect,
                 login::login_page_flash_message,
                 login::login_page,
                 login::login_user,
@@ -77,8 +82,10 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 update::update_event,
                 update::update_session,
                 create::get_new_event_page,
+                create::get_new_event_page_redirect,
                 create::create_event,
                 create::get_new_session_page,
+                create::get_new_session_page_redirect,
                 create::create_session,
                 // update::update_events_and_sessions,
             ],
@@ -101,7 +108,7 @@ pub fn get_sesssion_from_cookies(
         .and_then(|session_cookie| session_store.get(session_cookie.value()).cloned())
 }
 
-fn renew_session(
+pub fn renew_session(
     cookies: &mut Cookies,
     session_store: &mut SessionStore,
     session: Session,

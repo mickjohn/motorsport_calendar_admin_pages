@@ -1,13 +1,12 @@
 use client::Client;
 use motorsport_calendar_common::event::Event;
-use rocket::http::Cookies;
 use rocket::response::Redirect;
 use rocket::State;
 use rocket_contrib::templates::Template;
+use session::Session;
 use std::collections::HashMap;
 use tera::Context;
-use web;
-use web::{SessionStoreArc, WebConfig};
+use web::WebConfig;
 
 #[derive(Serialize, Debug)]
 struct SportInfo {
@@ -17,25 +16,20 @@ struct SportInfo {
 }
 
 #[get("/dashboard")]
-pub fn dashboard(
-    mut cookies: Cookies,
-    config: State<WebConfig>,
-    session_store: State<SessionStoreArc>,
-) -> Result<Template, Redirect> {
-    let mut session_store = session_store.write().unwrap();
-    web::get_sesssion_from_cookies(&mut cookies, &session_store)
-        .map(|session| {
-            let new_session = web::renew_session(&mut cookies, &mut session_store, session);
-            let mut context = Context::new();
-            context.insert("username", &new_session.get_user().username);
+pub fn dashboard(config: State<WebConfig>, session: Session) -> Template {
+    let mut context = Context::new();
+    context.insert("username", &session.get_user().username);
 
-            let client = Client::new(config.api_url.clone(), new_session.get_user().clone());
-            let events = client.get_events().unwrap();
-            let info = get_sport_info(&events);
-            context.insert("sport_info_list", &info);
-            Template::render("dashboard", &context)
-        })
-        .ok_or_else(|| Redirect::to("/login"))
+    let client = Client::new(config.api_url.clone(), session.get_user().clone());
+    let events = client.get_events().unwrap();
+    let info = get_sport_info(&events);
+    context.insert("sport_info_list", &info);
+    Template::render("dashboard", &context)
+}
+
+#[get("/dashboard")]
+pub fn dashboard_redirect() -> Redirect {
+    Redirect::to("/login")
 }
 
 fn get_sport_info(events: &[Event]) -> Vec<SportInfo> {

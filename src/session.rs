@@ -10,6 +10,7 @@ use std::collections::HashMap;
 use std::iter;
 use user::UserWithPlaintextPassword;
 use web;
+use web::SessionStoreArc;
 
 const SESSION_ID_LEN: &usize = &64;
 const SESSION_DURATION_SECS: &i64 = &(5 * 60);
@@ -70,14 +71,19 @@ impl<'a, 'r> FromRequest<'a, 'r> for Session {
     type Error = ();
 
     fn from_request(request: &'a Request<'r>) -> request::Outcome<Self, ()> {
-        match request.guard::<State<SessionStore>>() {
-            Success(session_store) => {
+        match request.guard::<State<SessionStoreArc>>() {
+            Success(session_store_arc) => {
+                let mut session_store = session_store_arc.write().unwrap();
                 let mut cookies = request.cookies();
                 web::get_sesssion_from_cookies(&mut cookies, &session_store)
-                    .map(|session| Success(session))
-                    .unwrap_or_else(|| Failure((Status::BadRequest, ())))
+                    .map(|session| {
+                        let renewed_session =
+                            web::renew_session(&mut cookies, &mut session_store, session);
+                        Success(renewed_session)
+                    })
+                    .unwrap_or_else(|| Forward(()))
             }
-            Forward(_) => Failure((Status::BadRequest, ())),
+            Forward(_) => Forward(()),
             Failure(_) => Failure((Status::BadRequest, ())),
         }
     }
