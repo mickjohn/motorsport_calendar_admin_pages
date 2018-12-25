@@ -1,6 +1,6 @@
 api_server_host = "http://mscapi"
 api_server_port = 8000
-content_root = "www"
+content_root = "/var/motorsport_calendar_admin/www"
 css_root = "css"
 js_root = "js"
 cookie_cleaner_interval_seconds = 5
