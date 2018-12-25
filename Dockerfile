@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 RUN mkdir -p "/var/motorsport_calendar_admin/" \
-  && mkdir -p "/etc/motorsport_calendar_admin"
+  && mkdir -p "/etc/motorsport_calendar_admin" \
   && apt-get update \
   && apt-get install libssl1.0.0 -y
 
