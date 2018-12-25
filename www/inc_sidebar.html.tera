@@ -2,6 +2,6 @@
       <h2>Menu</h2>
       <a href="/dashboard" >&#128480; Dashboard</a>
       <a href="/events" >Events</a>
-      <a href="#" >Sessions</a>
+      <a href="/create/event" >Create Event</a>
       <a href="/logout" class="sidebar-logout">Logout</a>
     </div>

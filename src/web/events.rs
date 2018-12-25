@@ -7,6 +7,7 @@ use rocket_contrib::templates::Template;
 use session::Session;
 use tera::Context;
 use web::WebConfig;
+use web::login;
 
 #[derive(FromForm)]
 pub struct SportType {
@@ -34,7 +35,7 @@ pub fn get_event(
 
 #[get("/events/<_event_id>", rank = 2)]
 pub fn get_event_redirect(_event_id: i32) -> Redirect {
-    Redirect::to("/login_page")
+    Redirect::to(uri!(login::login_page))
 }
 
 #[get("/events")]
@@ -49,7 +50,7 @@ pub fn get_events(config: State<WebConfig>, session: Session) -> Template {
 
 #[get("/events", rank = 2)]
 pub fn get_events_redirect() -> Redirect {
-    Redirect::to("/login_page")
+    Redirect::to(uri!(login::login_page))
 }
 
 #[get("/events?<sport_type..>")]
@@ -72,9 +73,9 @@ pub fn get_events_query(
     Template::render("events", &context)
 }
 
-#[get("/events?<sport_type..>")]
-pub fn get_events_query_redirect(sport_type: Option<Form<SportType>>) -> Redirect {
-    Redirect::to("/login_page")
+#[get("/events?<_sport_type..>", rank = 3)]
+pub fn get_events_query_redirect(_sport_type: Option<Form<SportType>>) -> Redirect {
+    Redirect::to(uri!(login::login_page))
 }
 
 #[get("/events/<event_id>/sessions/<session_id>")]
@@ -96,5 +97,5 @@ pub fn get_session(
 
 #[get("/events/<_event_id>/sessions/<_session_id>", rank = 2)]
 pub fn get_session_redirect(_event_id: i32, _session_id: i32) -> Redirect {
-    Redirect::to("/login_page")
+    Redirect::to(uri!(login::login_page))
 }

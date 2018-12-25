@@ -1,9 +1,8 @@
-use super::dashboard;
-use super::WebConfig;
+use web::{dashboard, login, WebConfig};
 use session::Session;
 
 use rocket::request::FlashMessage;
-use rocket::response::NamedFile;
+use rocket::response::{NamedFile, Redirect};
 use rocket::State;
 use rocket_contrib::templates::Template;
 
@@ -33,6 +32,11 @@ pub fn static_js(file: PathBuf, config: State<WebConfig>) -> Option<NamedFile> {
 #[get("/")]
 pub fn index(config: State<WebConfig>, session: Session) -> Template {
     dashboard::dashboard(config, session)
+}
+
+#[get("/", rank = 2)]
+pub fn index_redirect() -> Redirect {
+    Redirect::to(uri!(login::login_page))
 }
 
 #[get("/500_error.html")]

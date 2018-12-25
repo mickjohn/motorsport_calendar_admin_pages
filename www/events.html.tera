@@ -17,7 +17,7 @@
     {% include "inc_sidebar" %}
 
     <div id="root">
-      <a href="/events/create_event">New Event</a>
+      <a href="/create/event">New Event</a>
       <table class="events-table">
         <tr>
           <th> Sport </th>
@@ -36,11 +36,11 @@
           <td> {{ event.location }} </td>
           <td> {{ event.track }} </td>
           <td> <a href="/events/{{ event.id }}">✎</a> </td>
-          <td> <a>✖</a> </td>
+          <td> <a href="/delete/events/{{ event.id }}">✖</a> </td>
         </tr>
         {% endfor %}
       </table>
-      <a href="/events/create_event">New Event</a>
+      <a href="/create/event">New Event</a>
     </div>
   </body>
 </html>

@@ -5,7 +5,7 @@ use rocket::request::Form;
 use rocket::response::status;
 use rocket::response::{Flash, Redirect};
 use rocket::State;
-use web::WebConfig;
+use web::{WebConfig, static_routes};
 use session::Session;
 
 #[post("/events/<event_id>", data = "<event>")]
@@ -19,7 +19,7 @@ pub fn update_event(
     let client = Client::new(config.api_url.clone(), session.get_user().clone());
     client.update_event(&event_update, event_id).map_err(|e| {
         Flash::error(
-            Redirect::to("/500_error.html"),
+            Redirect::to(uri!(static_routes::internal_server_error)),
             format!("Error updating event!\n{}", e),
             )
     })?;

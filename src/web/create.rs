@@ -7,9 +7,9 @@ use rocket::State;
 use rocket_contrib::templates::Template;
 use session::Session;
 use tera::Context;
-use web::WebConfig;
+use web::{WebConfig, static_routes};
 
-#[get("/events/create_event")]
+#[get("/create/event")]
 pub fn get_new_event_page(session: Session, flash: Option<FlashMessage>) -> Template {
     let mut context = Context::new();
     context.insert("username", &session.get_user().username);
@@ -19,7 +19,7 @@ pub fn get_new_event_page(session: Session, flash: Option<FlashMessage>) -> Temp
     Template::render("new_event", &context)
 }
 
-#[get("/events/create_event")]
+#[get("/create/event", rank = 2)]
 pub fn get_new_event_page_redirect() -> Redirect {
     Redirect::to(uri!(login::login_page))
 }
@@ -44,7 +44,7 @@ pub fn create_event(
     ))
 }
 
-#[get("/events/<event_id>/create_session")]
+#[get("/create/event/<event_id>/session")]
 pub fn get_new_session_page(
     event_id: i32,
     session: Session,
@@ -59,7 +59,7 @@ pub fn get_new_session_page(
     Template::render("new_session", &context)
 }
 
-#[get("/events/<_event_id>/create_session")]
+#[get("/create/event/<_event_id>/session", rank = 2)]
 pub fn get_new_session_page_redirect(_event_id: i32) -> Redirect {
     Redirect::to(uri!(login::login_page))
 }
@@ -75,7 +75,7 @@ pub fn create_session(
     let client = Client::new(config.api_url.clone(), web_session.get_user().clone());
     client.create_session(&new_session, event_id).map_err(|e| {
         Flash::error(
-            Redirect::to("/500_error.html"),
+            Redirect::to(uri!(static_routes::internal_server_error)),
             format!("Error updating event!\n{}", e),
         )
     })?;

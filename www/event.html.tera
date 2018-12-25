@@ -35,7 +35,7 @@
         <input type="submit" value="Update Event" class="update-event-button">
       </form>
 
-      <a href="/events/{{ event.id }}/create_session">Create Session</a>
+      <a href="/create/event/{{ event.id }}/session">Create Session</a>
       <table class="sessions-table">
         <tr>
           <th> ID </th>
@@ -50,11 +50,11 @@
           <td> {{ session.name }} </td>
           <td> {{ session.time }} </td>
           <td> <a href="/events/{{ event.id }}/sessions/{{ session.id }}">✎</a> </td>
-          <td> <a>✖</a> </td>
+          <td> <a href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>
         </tr>
         {% endfor %}
       </table>
-      <a href="/events/{{ event.id }}/create_session">Create Session</a>
+      <a href="/create/event/{{ event.id }}/session">Create Session</a>
     </div>
   </body>
 </html>

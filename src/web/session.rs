@@ -27,5 +27,5 @@ pub fn get_session(
             context.insert("session", &session);
             Template::render("session", &context)
         })
-        .ok_or_else(|| Redirect::to("/login"))
+        .ok_or_else(|| Redirect::to(uri!(login::login_page)))
 }

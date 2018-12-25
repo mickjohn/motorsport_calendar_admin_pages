@@ -204,4 +204,35 @@ impl Client {
             .send()?;
         Ok(())
     }
+
+    pub fn delete_session(&self, session_id: i32, event_id: i32) -> Result<(), Error> {
+        let client = self.json_http_client_with_auth()?;
+        let url = format!(
+            "{url}/events/{event_id}/sessions/{session_id}",
+            url = self.api_url,
+            session_id = session_id,
+            event_id = event_id,
+        );
+        client
+            .delete(&url)
+            .basic_auth(
+                &self.user.username.clone(),
+                Some(self.user.password.clone()),
+            )
+            .send()?;
+        Ok(())
+    }
+
+    pub fn delete_event(&self, event_id: i32) -> Result<(), Error> {
+        let client = self.json_http_client_with_auth()?;
+        let url = format!("{}/events/{}", self.api_url, event_id);
+        client
+            .delete(&url)
+            .basic_auth(
+                &self.user.username.clone(),
+                Some(self.user.password.clone()),
+            )
+            .send()?;
+        Ok(())
+    }
 }

@@ -7,6 +7,7 @@ use session::Session;
 use std::collections::HashMap;
 use tera::Context;
 use web::WebConfig;
+use web::login;
 
 #[derive(Serialize, Debug)]
 struct SportInfo {
@@ -27,9 +28,9 @@ pub fn dashboard(config: State<WebConfig>, session: Session) -> Template {
     Template::render("dashboard", &context)
 }
 
-#[get("/dashboard")]
+#[get("/dashboard", rank = 2)]
 pub fn dashboard_redirect() -> Redirect {
-    Redirect::to("/login")
+    Redirect::to(uri!(login::login_page))
 }
 
 fn get_sport_info(events: &[Event]) -> Vec<SportInfo> {

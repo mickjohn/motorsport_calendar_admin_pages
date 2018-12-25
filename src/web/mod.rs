@@ -10,12 +10,13 @@ use std::sync::{Arc, RwLock};
 use std::thread;
 use std::time::Duration;
 
-mod create;
-mod dashboard;
+mod static_routes;
 mod events;
 mod login;
-mod static_routes;
+mod dashboard;
+mod create;
 mod update;
+mod delete;
 
 pub type SessionStoreArc = Arc<RwLock<SessionStore>>;
 
@@ -64,6 +65,7 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 static_routes::static_css,
                 static_routes::static_js,
                 static_routes::index,
+                static_routes::index_redirect,
                 static_routes::internal_server_error,
                 events::get_events,
                 events::get_events_redirect,
@@ -87,6 +89,8 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 create::get_new_session_page,
                 create::get_new_session_page_redirect,
                 create::create_session,
+                delete::delete_event,
+                delete::delete_session,
                 // update::update_events_and_sessions,
             ],
         )
