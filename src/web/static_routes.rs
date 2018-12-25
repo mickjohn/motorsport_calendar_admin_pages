@@ -1,5 +1,5 @@
-use web::{dashboard, login, WebConfig};
 use session::Session;
+use web::{dashboard, login, WebConfig};
 
 use rocket::request::FlashMessage;
 use rocket::response::{NamedFile, Redirect};

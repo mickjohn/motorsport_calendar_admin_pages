@@ -6,8 +6,8 @@ use rocket_contrib::templates::Template;
 use session::Session;
 use std::collections::HashMap;
 use tera::Context;
-use web::WebConfig;
 use web::login;
+use web::WebConfig;
 
 #[derive(Serialize, Debug)]
 struct SportInfo {

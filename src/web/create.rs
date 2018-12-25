@@ -7,7 +7,7 @@ use rocket::State;
 use rocket_contrib::templates::Template;
 use session::Session;
 use tera::Context;
-use web::{WebConfig, static_routes};
+use web::{static_routes, WebConfig};
 
 #[get("/create/event")]
 pub fn get_new_event_page(session: Session, flash: Option<FlashMessage>) -> Template {

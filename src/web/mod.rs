@@ -10,13 +10,13 @@ use std::sync::{Arc, RwLock};
 use std::thread;
 use std::time::Duration;
 
-mod static_routes;
+mod create;
+mod dashboard;
+mod delete;
 mod events;
 mod login;
-mod dashboard;
-mod create;
+mod static_routes;
 mod update;
-mod delete;
 
 pub type SessionStoreArc = Arc<RwLock<SessionStore>>;
 

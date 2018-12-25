@@ -9,8 +9,8 @@ use rocket_contrib::templates::Template;
 use session::{self, Session, SessionStore};
 use std::collections::HashMap;
 use web;
-use web::SessionStoreArc;
 use web::dashboard;
+use web::SessionStoreArc;
 
 // Render page with flash message, e.g. 'incorrect username or pass',
 // or 'you must be logged in to view this page'
@@ -67,7 +67,10 @@ pub fn logout_user(mut cookies: Cookies, session_store: State<SessionStoreArc>) 
         session_store.remove(&session.get_id().to_string());
         cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
     }
-    Flash::success(Redirect::to(uri!(web::login::login_page_flash_message)), "Successfully logged out.")
+    Flash::success(
+        Redirect::to(uri!(web::login::login_page_flash_message)),
+        "Successfully logged out.",
+    )
 }
 
 fn create_session(

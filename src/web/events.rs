@@ -6,8 +6,8 @@ use rocket::State;
 use rocket_contrib::templates::Template;
 use session::Session;
 use tera::Context;
-use web::WebConfig;
 use web::login;
+use web::WebConfig;
 
 #[derive(FromForm)]
 pub struct SportType {
