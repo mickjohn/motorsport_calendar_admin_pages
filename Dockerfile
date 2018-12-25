@@ -1,15 +1,13 @@
 FROM ubuntu:18.04
 
 RUN mkdir -p "/var/motorsport_calendar_admin/" \
-  && mkdir -p "/etc/motorsport_calendar_admin" \
   && apt-get update \
-  && apt-get install libssl1.0.0 -y
+  && apt-get install libssl1.1 -y
 
-# WORKDIR /etc/motorsport_calendar_admin
-# COPY docker_config.toml .
 
 WORKDIR /usr/bin
 COPY docker_config.toml config.toml
+COPY log4rs.yml log4rs.yml
 COPY target/release/motorsport_calendar_admin_pages .
 
 WORKDIR /var/motorsport_calendar_admin/
