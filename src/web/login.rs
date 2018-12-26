@@ -24,13 +24,8 @@ pub fn login_page_flash_message(flash: Option<FlashMessage>) -> Template {
 }
 
 #[get("/login", rank = 2)]
-pub fn login_page(session: Session) -> Result<Template, Redirect> {
-    let mut context = HashMap::new();
-    context.insert(
-        "username".to_string(),
-        session.get_user().username.to_string(),
-    );
-    Err(Redirect::to(uri!(dashboard::dashboard)))
+pub fn login_page(_session: Session) -> Redirect {
+    Redirect::to(uri!(dashboard::dashboard))
 }
 
 #[post("/login", data = "<user_data>")]

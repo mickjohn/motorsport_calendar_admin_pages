@@ -29,11 +29,7 @@ pub fn update_event(
     ))
 }
 
-#[post(
-    "/update_session/<event_id>",
-    format = "application/json",
-    data = "<session_update>"
-)]
+#[post("/update_session/<event_id>", data = "<session_update>")]
 pub fn update_session(
     session_update: Form<SessionUpdate>,
     event_id: i32,
