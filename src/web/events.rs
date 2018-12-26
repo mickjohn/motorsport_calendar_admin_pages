@@ -90,7 +90,7 @@ pub fn get_session(
 
     let client = Client::new(config.api_url.clone(), session.get_user().clone());
     let s = client.get_session(event_id, session_id).unwrap();
-    context.insert("event", &s);
+    context.insert("event_id", &event_id);
     context.insert("session", &s);
     Template::render("session", &context)
 }

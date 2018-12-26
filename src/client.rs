@@ -15,19 +15,15 @@ use super::user::UserWithPlaintextPassword as Uwpp;
 
 #[derive(Debug, Serialize)]
 struct ApiSessionUpdate {
-    pub id: i32,
     pub name: String,
     pub time: NaiveDateTime,
-    pub date: NaiveDateTime,
 }
 
 impl From<SessionUpdate> for ApiSessionUpdate {
     fn from(session_update: SessionUpdate) -> Self {
         ApiSessionUpdate {
-            id: session_update.id,
             name: session_update.name,
-            time: session_update.time.0.naive_utc(),
-            date: session_update.time.0.naive_utc(),
+            time: session_update.time.0,
         }
     }
 }
@@ -148,10 +144,10 @@ impl Client {
     pub fn update_session(
         &self,
         updated_session: SessionUpdate,
+        session_id: i32,
         event_id: i32,
     ) -> Result<(), Error> {
         let client = self.json_http_client_with_auth()?;
-        let session_id = updated_session.id;
         let body_string = serde_json::to_string(&ApiSessionUpdate::from(updated_session)).unwrap();
         let url = format!(
             "{url}/events/{event_id}/sessions/{session_id}",

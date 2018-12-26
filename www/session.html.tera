@@ -17,10 +17,10 @@
     {% include "inc_sidebar" %}
 
     <div id="root">
-      <form method="post" action="/update_session/{{ event.id }}">
+      <a href="/events/{{ event_id }}">Parent Event ({{ event_id }})</a>
+      <form method="post" action="/events/{{ event_id }}/sessions/{{ session.id }}">
         Session ID: {{ session.id }} </br>
         Session Name: <input type="text" name="name" value="{{ session.name }}"> </br>
-      <form method="post" action="/events/{{ event.id }}">
         Session Time (in UTC): <input type="text" name="time" value="{{ session.time | date(format="%Y-%m-%dT%H:%M:%S") }}"> </br>
         <input type="submit" value="Update">
       </form>
