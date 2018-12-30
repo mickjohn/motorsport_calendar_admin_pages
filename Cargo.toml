@@ -26,4 +26,4 @@ features = ["tera_templates", "json"]
 
 [dependencies.motorsport_calendar_common]
 git = "https://github.com/mickjohn/motorsport_calendar_common.git"
-rev = "c9168340e5d97ddb42ded7c99b3051de6a92e6b0"
+rev = "ab67e77b6b0d519709e0d432f22ba4c495b33732"

@@ -839,7 +839,7 @@ dependencies = [
  "lazy_static 1.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "log4rs 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "motorsport_calendar_common 0.1.0 (git+https://github.com/mickjohn/motorsport_calendar_common.git?rev=c9168340e5d97ddb42ded7c99b3051de6a92e6b0)",
+ "motorsport_calendar_common 0.1.0 (git+https://github.com/mickjohn/motorsport_calendar_common.git?rev=ab67e77b6b0d519709e0d432f22ba4c495b33732)",
  "rand 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "reqwest 0.9.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "rocket 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -854,7 +854,7 @@ dependencies = [
 [[package]]
 name = "motorsport_calendar_common"
 version = "0.1.0"
-source = "git+https://github.com/mickjohn/motorsport_calendar_common.git?rev=c9168340e5d97ddb42ded7c99b3051de6a92e6b0#c9168340e5d97ddb42ded7c99b3051de6a92e6b0"
+source = "git+https://github.com/mickjohn/motorsport_calendar_common.git?rev=ab67e77b6b0d519709e0d432f22ba4c495b33732#ab67e77b6b0d519709e0d432f22ba4c495b33732"
 dependencies = [
  "chrono 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.82 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -2217,7 +2217,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum mio-extras 2.0.5 (registry+https://github.com/rust-lang/crates.io-index)" = "46e73a04c2fa6250b8d802134d56d554a9ec2922bf977777c805ea5def61ce40"
 "checksum mio-uds 0.6.7 (registry+https://github.com/rust-lang/crates.io-index)" = "966257a94e196b11bb43aca423754d87429960a768de9414f3691d6957abf125"
 "checksum miow 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "8c1f2f3b1cf331de6896aabf6e9d55dca90356cc9960cca7eaaf408a355ae919"
-"checksum motorsport_calendar_common 0.1.0 (git+https://github.com/mickjohn/motorsport_calendar_common.git?rev=c9168340e5d97ddb42ded7c99b3051de6a92e6b0)" = "<none>"
+"checksum motorsport_calendar_common 0.1.0 (git+https://github.com/mickjohn/motorsport_calendar_common.git?rev=ab67e77b6b0d519709e0d432f22ba4c495b33732)" = "<none>"
 "checksum native-tls 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "ff8e08de0070bbf4c31f452ea2a70db092f36f6f2e4d897adf5674477d488fb2"
 "checksum net2 0.2.33 (registry+https://github.com/rust-lang/crates.io-index)" = "42550d9fb7b6684a6d404d9fa7250c2eb2646df731d1c06afc06dcee9e1bcf88"
 "checksum nodrop 0.1.13 (registry+https://github.com/rust-lang/crates.io-index)" = "2f9667ddcc6cc8a43afc9b7917599d7216aa09c463919ea32c59ed6cac8bc945"
