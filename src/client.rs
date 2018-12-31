@@ -169,7 +169,6 @@ impl Client {
     pub fn create_session(&self, new_session: &NewSession, event_id: i32) -> Result<(), Error> {
         let client = self.json_http_client_with_auth()?;
         let body_string = serde_json::to_string(&new_session).unwrap();
-        println!("body string = {}", body_string);
         let url = format!(
             "{url}/events/{event_id}/create_session",
             url = self.api_url,
