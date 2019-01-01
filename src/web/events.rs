@@ -77,25 +77,3 @@ pub fn get_events_query(
 pub fn get_events_query_redirect(_sport_type: Option<Form<SportType>>) -> Redirect {
     Redirect::to(uri!(login::login_page))
 }
-
-#[get("/events/<event_id>/sessions/<session_id>")]
-pub fn get_session(
-    config: State<WebConfig>,
-    event_id: i32,
-    session_id: i32,
-    session: Session,
-) -> Template {
-    let mut context = Context::new();
-    context.insert("username", &session.get_user().username);
-
-    let client = Client::new(config.api_url.clone(), session.get_user().clone());
-    let s = client.get_session(event_id, session_id).unwrap();
-    context.insert("event_id", &event_id);
-    context.insert("session", &s);
-    Template::render("session", &context)
-}
-
-#[get("/events/<_event_id>/sessions/<_session_id>", rank = 2)]
-pub fn get_session_redirect(_event_id: i32, _session_id: i32) -> Redirect {
-    Redirect::to(uri!(login::login_page))
-}

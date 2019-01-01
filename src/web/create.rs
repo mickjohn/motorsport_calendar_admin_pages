@@ -44,26 +44,6 @@ pub fn create_event(
     ))
 }
 
-#[get("/create/event/<event_id>/session")]
-pub fn get_new_session_page(
-    event_id: i32,
-    session: Session,
-    flash: Option<FlashMessage>,
-) -> Template {
-    let mut context = Context::new();
-    context.insert("username", &session.get_user().username);
-    context.insert("event_id", &event_id);
-    if let Some(flash_message) = flash {
-        context.insert("flash", flash_message.msg());
-    }
-    Template::render("new_session", &context)
-}
-
-#[get("/create/event/<_event_id>/session", rank = 2)]
-pub fn get_new_session_page_redirect(_event_id: i32) -> Redirect {
-    Redirect::to(uri!(login::login_page))
-}
-
 #[post("/events/<event_id>/create_session", data = "<session>")]
 pub fn create_session(
     event_id: i32,
