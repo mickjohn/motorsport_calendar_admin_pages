@@ -83,6 +83,7 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 login::logout_user,
                 update::update_event,
                 update::update_session,
+                update::update_sessions,
                 create::get_new_event_page,
                 create::get_new_event_page_redirect,
                 create::create_event,

@@ -35,26 +35,32 @@
         <input type="submit" value="Update Event" class="update-event-button">
       </form>
 
-      <a href="/create/event/{{ event.id }}/session">Create Session</a>
-      <table class="sessions-table">
-        <tr>
-          <th> ID </th>
-          <th> Name </th>
-          <th> Time </th>
-          <th> Edit </th>
-          <th> Delete </th>
-        </tr>
-        {% for session in event.sessions %}
-        <tr>
-          <td> {{ session.id }} </td>
-          <td> {{ session.name }} </td>
-          <td> {{ session.time }} </td>
-          <td> <a href="/events/{{ event.id }}/sessions/{{ session.id }}">✎</a> </td>
-          <td> <a href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>
-        </tr>
-        {% endfor %}
-      </table>
-      <a href="/create/event/{{ event.id }}/session">Create Session</a>
+      <form method="post" action="/events/{{ event.id }}/update_sessions">
+        <table class="sessions-table">
+          <tr>
+            <th> ID </th>
+            <th> Name </th>
+            <th> Time </th>
+            <th> Delete </th>
+          </tr>
+          {% for session in event.sessions %}
+          <tr>
+            <td> {{ session.id }} </td>
+            <td style="display: none;"> <input type="text" name="id_{{ loop.index0 }}" value="{{ session.id }}"/> </td>
+            <td> <input type="text" name="name_{{ loop.index0 }}" value="{{ session.name }}"/> </td>
+            <td> <input type="text" name="time_{{ loop.index0 }}" value="{{ session.time }}"/> </td>
+            <td> <a href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>
+          </tr>
+          {% endfor %}
+        </table>
+        <input type="submit" value="Update Sessions">
+      </form>
+
+      <form method="post" action="/events/{{ event.id }}/create_session">
+        Session Name: <input type="text" name="name"> </br>
+        Session Time (in UTC): <input type="text" name="time" value="YYYY-MM-DDTHH:MM:SS"> </br>
+        <input type="submit" value="Create new session">
+      </form>
     </div>
   </body>
 </html>
