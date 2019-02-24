@@ -39,7 +39,7 @@
         <input type="submit" value="Update Event" class="update-event-button">
       </form>
 
-      <form method="post" action="/events/{{ event.id }}/update_sessions">
+      <form method="post" action="/events/{{ event.id }}/update_sessions" id="sessions_form">
         <table class="sessions-table">
           <tr>
             <th> ID </th>
@@ -61,8 +61,8 @@
       </form>
 
       <form method="post" action="/events/{{ event.id }}/create_session">
-        Session Name: <input type="text" name="name"> </br>
-        Session Time (in UTC): <input type="text" name="time" value="YYYY-MM-DDTHH:MM:SS"> </br>
+        Session Name: <input id="new_session_name" type="text" name="name"> </br>
+        Session Time (in UTC): <input id="new_session_date" type="text" name="time" value="YYYY-MM-DDTHH:MM:SS"> </br>
         <input type="submit" value="Create new session">
       </form>
     </div>
