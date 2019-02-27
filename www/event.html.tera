@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
-    <script
-			  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-			  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 			  crossorigin="anonymous"></script>
     <script src="/js/event.js"></script> 
     <link rel="stylesheet" href="/css/event.css">
@@ -26,19 +26,42 @@
     {% endif %}
 
     <div id="root">
+      <div class="event-form">
+      <h3> Event {{ event.id }}</h3>
       <form method="post" action="/events/{{ event.id }}">
         <h1> Event: </h1>
         <div class="event-box">
-          <h3> Event ID: {{ event.id }}</h3>
-          <h5> Sport Type: <input id="event_sport" type="text" name="sport" value="{{ event.sport }}"> </h5>
-          <h5> Title: <input id="event_title" type="text" name="title" value="{{ event.title }}"> </h5>
-          <h5> Country: <input id="event_country" type="text" name="country" value="{{ event.country }}"> </h5>
-          <h5> Location: <input id="event_location" type="text" name="location" value="{{ event.location }}"> </h5>
-          <h5> Track: <input id="event_track" type="text" name="track" value="{{ event.track }}"> </h5>
+          <table>
+            <tbody>
+              <tr>
+                <td>Sport Type</td>
+                <td><input id="event_sport" type="text" name="sport" value="{{ event.sport }}"/></td>
+              </tr>
+              <tr>
+                <td>Title</td>
+                <td><input id="event_title" type="text" name="title" value="{{ event.title }}"/></td>
+              </tr>
+              <tr>
+                <td>Country</td>
+                <td><input id="event_country" type="text" name="country" value="{{ event.country }}"/></td>
+              </tr>
+              <tr>
+                <td>Location</td>
+                <td> <input id="event_location" type="text" name="location" value="{{ event.location }}"/></td>
+              </tr>
+              <tr>
+                <td>Track</td>
+                <td><input id="event_track" type="text" name="track" value="{{ event.track }}"/></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <input type="submit" value="Update Event" class="update-event-button">
       </form>
+      </div>
 
+    <div class="session-box">
+      <h3>Sessions</h3>
       <form method="post" action="/events/{{ event.id }}/update_sessions" id="sessions_form">
         <table class="sessions-table">
           <tr>
@@ -57,14 +80,21 @@
           </tr>
           {% endfor %}
         </table>
-        <input type="submit" value="Update Sessions">
+        <input type="submit" value="Update Sessions" class="update-event-button">
+        <button type="button" id="new-session-button" class="new-session-button">New Session</button>
       </form>
 
-      <form method="post" action="/events/{{ event.id }}/create_session">
-        Session Name: <input id="new_session_name" type="text" name="name"> </br>
-        Session Time (in UTC): <input id="new_session_date" type="text" name="time" value="YYYY-MM-DDTHH:MM:SS"> </br>
-        <input type="submit" value="Create new session">
+      <form method="post" action="/events/53/create_session" id="new-session-form">
+        Session Name: <input id="new_session_name" type="text" name="name" value="Practice 1">
+        <input id="new-session-datetime" type="text" name="time">
+
+        Session Date: <input id="new-session-date" type="date" value="2017-06-01">
+        Session Time (in UTC): <input id="new-session-time" id="time" type="time" value="12:00">
+
+        <input type="submit" id="submit-new-session" value="Create new session" class="update-event-button">
+        <button type="button" id="cancel-new-session" class="cancel-new-session">Cancel</button>
       </form>
+    </div>
     </div>
   </body>
 </html>

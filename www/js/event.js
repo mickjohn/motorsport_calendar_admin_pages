@@ -74,19 +74,60 @@ function addDay(date) {
 }
 
 function setNewSessionValues() {
-  var blankSession = new NewSessionGuess("", "");
   var newSession = deriveNextSession();
+  if (newSession.name === "") { return; }
 
-  if (blankSession === newSession) { return; }
+  $('#new-session-name').val(newSession.name);
+  if (newSession.date === "") { return; }
 
-  $('#new_session_name').val(newSession.name);
-  var dateString = newSession.date.toISOString();
-  dateString = dateString.substring(0, dateString.length - 1);
-  $('#new_session_date').val(dateString);
+  var year = newSession.date.getFullYear();
+  var month = ("00" + (newSession.date.getMonth() + 1)).slice(-2);
+  var day = ("00" + (newSession.date.getDate() + 1)).slice(-2);
+  var dateString = `${year}-${month}-${day}`;
+  $('#new-session-date').val(dateString);
+}
+
+function dateAndTimeStringsToDate(d, t) {
+  var timeString = `${d}T${t}:00`;
+  return timeString;
+}
+
+function init() {
+  $('#new-session-button').click(function () {
+    // Show the new session form
+    $('#new-session-form').slideDown("slow", function () { });
+    // Hide the 'new' buttin and show the cancel button
+    $('#new-session-button').fadeOut("fast", function () {
+      $('#cancel-new-session-top').fadeIn("fast");
+    });
+  });
+
+  // If either of the cancel buttons are clicked hide the new session from
+  $('#cancel-new-session, #cancel-new-session-top').click(function () {
+    $('#new-session-form').slideUp("slow", function () {
+      // Hide the top cancel button
+      $('#cancel-new-session-top').fadeOut("fast", function () {
+        // Show the new session button
+        $('#new-session-button').fadeIn("fast");
+      });
+    });
+  });
+
+  $('form').submit(function (event) {
+    event.preventDefault();
+    var date = $('#new-session-date').val();
+    var time = $('#new-session-time').val();
+    var datetime = dateAndTimeStringsToDate(date, time);
+    $('#new-session-datetime').val(datetime);
+    console.log( $( this ).serialize() );
+    this.submit();
+  });
+
+  setNewSessionValues();
 }
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", setNewSessionValues);
+  document.addEventListener("DOMContentLoaded", init);
 } else {
-  setNewSessionValues();
+  init();
 }
