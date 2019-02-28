@@ -46,6 +46,7 @@ function deriveNextSession() {
 
   switch (sport) {
     case "Formula 1":
+    case "Indycar":
       switch (lastSession.name) {
         case "Practice 1":
           retVal = new NewSessionGuess("Practice 2", lastSession.datetime);
