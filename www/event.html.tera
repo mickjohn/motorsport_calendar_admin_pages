@@ -84,7 +84,7 @@
         <button type="button" id="new-session-button" class="new-session-button">New Session</button>
       </form>
 
-      <form method="post" action="/events/53/create_session" id="new-session-form">
+      <form method="post" action="/events/{{ event.id }}/create_session" id="new-session-form">
         Session Name: <input id="new_session_name" type="text" name="name" value="Practice 1">
         <input id="new-session-datetime" type="text" name="time">
 
