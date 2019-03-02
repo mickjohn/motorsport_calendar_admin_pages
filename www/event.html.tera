@@ -91,7 +91,7 @@
       </form>
 
       <form method="post" action="/events/{{ event.id }}/create_session" id="new-session-form">
-        Session Name: <input id="new_session_name" type="text" name="name" value="Practice 1"><br/>
+        Session Name: <input id="new-session-name" type="text" name="name" value="Practice 1"><br/>
         <input id="new-session-datetime" type="text" name="time">
 
         Session Date: <input id="new-session-date" type="date" value="2017-06-01"><br/>
