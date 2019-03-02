@@ -73,7 +73,7 @@
           {% for session in event.sessions %}
           <tr>
             <td> {{ session.id }} </td>
-            <td style="display: none;"> <input type="text" name="id_{{ loop.index0 }}" value="{{ session.id }}"/> </td>
+            <td class="hidden"> <input type="text" name="id_{{ loop.index0 }}" value="{{ session.id }}"/> </td>
             <td> <input type="text" name="name_{{ loop.index0 }}" value="{{ session.name }}"/> </td>
             <td> <input type="text" name="time_{{ loop.index0 }}" value="{{ session.time }}"/> </td>
             <td> <a href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>

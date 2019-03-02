@@ -124,3 +124,7 @@ input[type=submit], button {
 #new-session-form {
   display: none;
 }
+
+.hidden {
+  display: none;
+}
