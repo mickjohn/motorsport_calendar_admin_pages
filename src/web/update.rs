@@ -35,6 +35,7 @@ pub fn update_sessions(
     session: Session,
 ) -> Result<Flash<Redirect>, Flash<Redirect>> {
     let client = Client::new(config.api_url.clone(), session.get_user().clone());
+    dbg!(&sessions_update);
     for (session_id, session_update) in sessions_update.into_inner().sessions {
         client
             .update_session(session_update, session_id, event_id)

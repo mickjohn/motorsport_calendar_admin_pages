@@ -89,14 +89,14 @@ impl<'f> FromForm<'f> for SessionsUpdate {
         let mut sessions = Vec::new();
         let mut index = 0;
 
-        // SessionUpdate has two fields. So take two fields at a time
+        // SessionUpdate has 5 fields. So take 5 fields at a time. Don't care about the last two.
         loop {
             let id_key = format!("id_{}", index);
             let name_key = format!("name_{}", index);
             let time_key = format!("time_{}", index);
 
-            if let (Some(id_form_item), Some(name_form_item), Some(time_form_item)) =
-                (iter.next(), iter.next(), iter.next())
+            if let (Some(id_form_item), Some(name_form_item), Some(time_form_item), _, _) =
+                (iter.next(), iter.next(), iter.next(), iter.next(), iter.next())
             {
                 let id = get_id_from_form_item(&id_form_item, &id_key);
                 let name = get_name_from_form_item(&name_form_item, &name_key);
