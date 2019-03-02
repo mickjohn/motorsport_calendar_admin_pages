@@ -64,32 +64,38 @@
       <h3>Sessions</h3>
       <form method="post" action="/events/{{ event.id }}/update_sessions" id="sessions_form">
         <table class="sessions-table">
-          <tr>
-            <th> ID </th>
-            <th> Name </th>
-            <th> Time </th>
-            <th> Delete </th>
-          </tr>
-          {% for session in event.sessions %}
-          <tr>
-            <td> {{ session.id }} </td>
-            <td class="hidden"> <input type="text" name="id_{{ loop.index0 }}" value="{{ session.id }}"/> </td>
-            <td> <input type="text" name="name_{{ loop.index0 }}" value="{{ session.name }}"/> </td>
-            <td> <input type="text" name="time_{{ loop.index0 }}" value="{{ session.time }}"/> </td>
-            <td> <a href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>
-          </tr>
-          {% endfor %}
+          <tbody id="sessions-table-body">
+            <tr>
+              <th> ID </th>
+              <th> Name </th>
+              <th> Date </th>
+              <th> Time </th>
+              <th> Delete </th>
+            </tr>
+            {% for session in event.sessions %}
+            <tr>
+              <td> {{ session.id }} </td>
+              <td class="hidden"> <input type="text" name="id_{{ loop.index0 }}" value="{{ session.id }}"/> </td>
+              <td> <input type="text" name="name_{{ loop.index0 }}" value="{{ session.name }}"/> </td>
+              <td class="hidden"> <input type="text" name="time_{{ loop.index0 }}" value="{{ session.time }}"/> </td>
+              <td> <input type="date" name="date_in_{{ loop.index0 }}" value="{{ session.time | date(format='%Y-%m-%d') }}"> </td>
+              <td> <input type="time" name="time_in_{{ loop.index0 }}" value="{{ session.time | date(format='%H:%M') }}"/> </td>
+              <td> <a href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
         <input type="submit" value="Update Sessions" class="update-event-button">
         <button type="button" id="new-session-button" class="new-session-button">New Session</button>
+        <button type="normal" id="cancel-new-session-top" class="cancel-new-session">Cancel</button>
       </form>
 
       <form method="post" action="/events/{{ event.id }}/create_session" id="new-session-form">
-        Session Name: <input id="new_session_name" type="text" name="name" value="Practice 1">
+        Session Name: <input id="new_session_name" type="text" name="name" value="Practice 1"><br/>
         <input id="new-session-datetime" type="text" name="time">
 
-        Session Date: <input id="new-session-date" type="date" value="2017-06-01">
-        Session Time (in UTC): <input id="new-session-time" id="time" type="time" value="12:00">
+        Session Date: <input id="new-session-date" type="date" value="2017-06-01"><br/>
+        Session Time (in UTC): <input id="new-session-time" id="time" type="time" value="12:00"><br/>
 
         <input type="submit" id="submit-new-session" value="Create new session" class="update-event-button">
         <button type="button" id="cancel-new-session" class="cancel-new-session">Cancel</button>

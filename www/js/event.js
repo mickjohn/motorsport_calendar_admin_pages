@@ -114,13 +114,24 @@ function init() {
     });
   });
 
-  $('form').submit(function (event) {
+  $('#new-session-form').submit(function (event) {
     event.preventDefault();
     var date = $('#new-session-date').val();
     var time = $('#new-session-time').val();
     var datetime = dateAndTimeStringsToDate(date, time);
     $('#new-session-datetime').val(datetime);
-    console.log( $( this ).serialize() );
+    this.submit();
+  });
+
+  $('#sessions_form').submit(function (event) {
+    event.preventDefault();
+    var numOfRows = $('#sessions-table-body').children().length;
+    for(var i = 0;i < numOfRows; i++) {
+      var time = $(`[name='time_in_${i}']`).val();
+      var date = $(`[name='date_in_${i}']`).val();
+      $(`[name='time_${i}']`).val(dateAndTimeStringsToDate(date, time));
+    }
+    console.log( $(this).serializeArray () );
     this.submit();
   });
 
