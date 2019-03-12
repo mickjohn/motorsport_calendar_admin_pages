@@ -116,6 +116,8 @@ function init() {
 
   $('#new-session-form').submit(function (event) {
     event.preventDefault();
+    // Combine the time & date to create a datetime that can be parsed by
+    // the server
     var date = $('#new-session-date').val();
     var time = $('#new-session-time').val();
     var datetime = dateAndTimeStringsToDate(date, time);
@@ -126,12 +128,13 @@ function init() {
   $('#sessions_form').submit(function (event) {
     event.preventDefault();
     var numOfRows = $('#sessions-table-body').children().length;
-    for(var i = 0;i < numOfRows; i++) {
+    for (var i = 0; i < numOfRows; i++) {
+      // Combine the time & date to create a datetime that can be parsed by
+      // the server
       var time = $(`[name='time_in_${i}']`).val();
       var date = $(`[name='date_in_${i}']`).val();
       $(`[name='time_${i}']`).val(dateAndTimeStringsToDate(date, time));
     }
-    console.log( $(this).serializeArray () );
     this.submit();
   });
 

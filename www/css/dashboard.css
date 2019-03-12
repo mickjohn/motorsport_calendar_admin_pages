@@ -1,41 +1,201 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  background-color: #e1e1e1;
+  margin: 0 auto;
+  max-width: 70em;
+  background-color: #e4e4e4;
+  color: #bebebe;
+}
+
+header {
+  text-align: center;
+}
+
+.heading {
+  color: #484848;
+  text-align: center;
+}
+
+.actions a, button {
+  color: #484848;
   text-decoration: none;
+  padding: 0.3em 0.5em;
+  font-weight: bold;
+  border-radius: 10em;
+  border-style: solid;
+  border-width: 3px;
 }
 
-/* Root */
-#root {
-  margin-left: 18em;
+@media only screen and (max-width: 700px) {
+  .actions a, button {
+    font-size: 0.8em;
+  }
 }
-/* End Root */
 
+@media only screen and (min-width: 700px) {
+  .actions a, button {
+    font-size: 2em;
+  }
+}
+
+.new-event {
+  border-color: #539c54;
+}
+
+.list-events {
+  border-color: #53649c;
+}
+
+.logout {
+  border-color: #9c5353;
+  float: right;
+}
+
+.new-event:hover {
+  background-color: #539c54;
+}
+
+.list-events:hover {
+  background-color: #53649c;
+}
+
+.logout:hover {
+  background-color: #9c5353;
+}
 
 /* Sport Counts */
-.sport-count {
-  display: inline-block;
-  margin: 0.8em;
-  color: #484848;
-  background-color: #fff;
-  text-align: center;
-  padding-top: 2em;
-  padding-bottom: 2em;
-  width: 20em;
+
+/* Sport Counts - Small screen */
+
+@media only screen and (max-width: 700px) {
+  .sport-count {
+    display: inline-block;
+    margin: 0.6em;
+    color: #484848;
+    background-color: #fff;
+    text-align: center;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    width: 8em;
+    border-top: 3px solid grey;
+  }
+  .sport-count h1, h2, h3 {
+    margin: 0;
+    padding: 0.3em;
+    font-size: 0.8em;
+  }
+}
+
+/* Sport Counts - Large screen */
+
+@media only screen and (min-width: 700px) {
+  .sport-count {
+    display: inline-block;
+    margin: 0.8em;
+    color: #484848;
+    background-color: #fff;
+    text-align: center;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    width: 20em;
+    border-top: 3px solid grey;
+    -webkit-box-shadow: 3px 3px 5px 0px rgba(125, 125, 125, 1);
+    -moz-box-shadow: 3px 3px 5px 0px rgba(125, 125, 125, 1);
+    box-shadow: 3px 3px 5px 0px rgba(125, 125, 125, 1);
+  }
+  .sport-count:hover {
+    box-shadow: none;
+  }
 }
 
 #sport-count-section a, u {
-    text-decoration: none;
+  text-decoration: none;
 }
 
-.sport-count h1,h2,h3 {
+.sport-count h1, h2, h3 {
   margin: 0;
   padding: 0.3em;
 }
 
-/* .sport-count a:hover { */
-/*   transform: scale(2.7); */
-/* } */
-
 /* End sport counts */
+
+/* The Modal (background) */
+
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  padding-top: 100px;
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
+}
+
+/* Modal Content */
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 360px;
+}
+
+.close {
+  background-color: #924141;
+}
+
+/* New Event */
+
+.modal input[type=text] {
+  width: 100%;
+  padding: 3px 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #d8cbcb;
+  border-radius: 4px;
+  width: 12em;
+  color: #484848;
+  font-size: 16px;
+}
+
+/* Buttons */
+
+.modal input[type=submit], .modal button {
+  color: #fff;
+  font-size: 18px;
+  margin: 1em;
+  padding: 1em;
+  border: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.update-event-button {
+  background-color: #4368a8;
+}
+
+/* End Buttons */
+
+/* Event Box */
+.event-form {
+  border: 2px solid #d1cfcf;
+  background-color: white;
+  display: block;
+  text-align: center;
+  color: #484848;
+  margin: 1em auto;
+  padding: 0.5em 1em 0.5em 1em;
+  width: 20em;
+}

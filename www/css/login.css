@@ -1,0 +1,54 @@
+body {
+  font-family: sans-serif;
+  background: #614385; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #614385, #516395); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #614385, #516395); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: #484848;
+  padding: 2em 2em 0 2em;
+  
+}
+
+#form-container {
+  margin:auto;
+  max-width: 30em;
+  height: 12em;
+  background-color: #fff;
+  padding: 2em;
+  border-radius: 1em;
+}
+
+#form-container h2 {
+  text-align: center;
+}
+
+#form-login input[type=text],input[type=password] {
+  margin: auto;
+  border: none;
+  border-bottom: 1px solid grey;
+  padding: 0;
+  display: block;
+}
+
+#form-login input[type=text]:hover,input[type=password]:hover {
+  background-color: rgb(243, 243, 243);
+}
+
+#form-login input[type=submit] {
+  margin: auto;
+  border: none;
+  display: block;
+  background: #614385; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #614385, #516395); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #614385, #516395); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  width: 7em;
+  height: 2em;
+  color: white;
+  font-size: 18px;
+  border-radius: 2em;
+  cursor: pointer;
+}
+
+#form-login input[type=submit]:hover {
+  width: 7.2em;
+  height: 2.1em;
+}
