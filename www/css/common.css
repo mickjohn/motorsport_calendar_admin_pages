@@ -2,6 +2,28 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+header {
+    text-align: center;
+}
+
+header a {
+    text-decoration: none;
+    color: #258489;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 700px) {
+    header a {
+        font-size: 2em;
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    header a {
+        font-size: 4em;
+    }
+}
+
 /* Sport Colours */
 
 .formula_1_sport {

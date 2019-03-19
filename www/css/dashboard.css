@@ -158,6 +158,8 @@ header {
 
 /* New Event */
 
+/* TODO - On a small screen make the font small, so that the entire 'new event' modal can fit on the page*/
+
 .modal input[type=text] {
   width: 100%;
   padding: 3px 10px;
@@ -167,19 +169,56 @@ header {
   border-radius: 4px;
   width: 12em;
   color: #484848;
-  font-size: 16px;
 }
 
 /* Buttons */
 
 .modal input[type=submit], .modal button {
   color: #fff;
-  font-size: 18px;
   margin: 1em;
   padding: 1em;
   border: 2px;
   border-radius: 2px;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 700px) {
+
+  .modal-content {
+    width: 15em;
+  }
+
+  .event-form {
+    width: 12em;
+  }
+
+  h1 {
+    font-size: 1.2em;
+  }
+
+  td {
+    font-size: 0.8em;
+  }
+
+  .modal input[type=text] {
+    font-size: 0.8em;
+  }
+
+  /* Buttons */
+  .modal input[type=submit], .modal button {
+    font-size: 0.7em;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .modal input[type=text] {
+    font-size: 16px;
+  }
+
+  /* Buttons */
+  .modal input[type=submit], .modal button {
+    font-size: 18px;
+  }
 }
 
 .update-event-button {
@@ -189,6 +228,7 @@ header {
 /* End Buttons */
 
 /* Event Box */
+
 .event-form {
   border: 2px solid #d1cfcf;
   background-color: white;
@@ -197,5 +237,16 @@ header {
   color: #484848;
   margin: 1em auto;
   padding: 0.5em 1em 0.5em 1em;
-  width: 20em;
+}
+
+@media only screen and (max-width: 700px) {
+  .event-form {
+    width: 12em;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .event-form {
+    width: 20em;
+  }
 }

@@ -14,11 +14,12 @@
     <title>MJ Admin</title>
   </head>
   <body>
-    <div id="root">
 
+    {% include "includes/inc_header" %}
+
+    <div id="root">
       <h1 class="heading"> Actions </h1>
       <div class="actions">
-      {# <a href='/create/event' class="new-event">+ New Event</a> #}
       <button id='create-event' class="new-event">+ New Event</button>
       <a href='/events' class="list-events">View All Events</a>
       <a href='/logout' class="logout">Logout</a>

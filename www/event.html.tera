@@ -15,11 +15,7 @@
     <title>MJ Admin</title>
   </head>
   <body>
-    <!-- include header include -->
-    {% include "inc_header" %}
-
-    <!-- include sidebar include -->
-    {% include "inc_sidebar" %}
+    {% include "includes/inc_header" %}
 
     {% if flash %}
     <h1> {{ flash }} </h1>

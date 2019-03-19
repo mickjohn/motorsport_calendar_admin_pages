@@ -5,38 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
     <link rel="stylesheet" href="/css/events.css">
-    <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/common.css">
     <title>MJ Admin</title>
   </head>
   <body>
-    <!-- include header include -->
-    {% include "inc_header" %}
-
-    <!-- include sidebar include -->
-    {% include "inc_sidebar" %}
+  
+    {% include "includes/inc_header" %}
 
     <div id="root">
       <a href="/create/event">New Event</a>
       <table class="events-table">
         <tr>
           <th> Sport </th>
-          <th> Title </th>
+          <th class="hidden-small"> Title </th>
           <th> Country </th>
-          <th> Location </th>
+          <th class="hidden-small"> Location </th>
           <th> Track </th>
-          <th> Edit </th>
-          <th> Delete </th>
+          <th class="hidden-small"> Edit </th>
+          <th class="hidden-small"> Delete </th>
         </tr>
         {% for event in events %}
         <tr>
           <td> {{ event.sport }} </td>
-          <td> {{ event.title}} </td>
+          <td class="hidden-small"> {{ event.title}} </td>
           <td> {{ event.country }} </td>
-          <td> {{ event.location }} </td>
+          <td class="hidden-small"> {{ event.location }} </td>
           <td> {{ event.track }} </td>
-          <td> <a href="/events/{{ event.id }}">✎</a> </td>
-          <td> <a href="/delete/events/{{ event.id }}">✖</a> </td>
+          <td class="hidden-small"> <a href="/events/{{ event.id }}">✎ change</a> </td>
+          <td class="hidden-small"> <a href="/delete/events/{{ event.id }}">✖ delete</a> </td>
         </tr>
         {% endfor %}
       </table>
