@@ -15,12 +15,29 @@ td, th {
     padding: 8px;
 }
 
+td > a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.edit {
+  color: #9b992a;
+}
+
+.delete {
+  color: #d21d1d;
+}
+
 tr:nth-child(even) {
     background-color: #cbd0d8;
 }
 
 tr:hover {
   background-color: #fff;
+}
+
+.hidden {
+  display: none;
 }
 
 /* end table */

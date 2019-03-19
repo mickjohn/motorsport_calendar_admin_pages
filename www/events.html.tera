@@ -13,7 +13,6 @@
     {% include "includes/inc_header" %}
 
     <div id="root">
-      <a href="/create/event">New Event</a>
       <table class="events-table">
         <tr>
           <th> Sport </th>
@@ -25,18 +24,23 @@
           <th class="hidden-small"> Delete </th>
         </tr>
         {% for event in events %}
-        <tr>
+        <tr class="event-row">
+          <td class="hidden">{{ event.id }} </td>
           <td> {{ event.sport }} </td>
           <td class="hidden-small"> {{ event.title}} </td>
           <td> {{ event.country }} </td>
           <td class="hidden-small"> {{ event.location }} </td>
           <td> {{ event.track }} </td>
-          <td class="hidden-small"> <a href="/events/{{ event.id }}">✎ change</a> </td>
-          <td class="hidden-small"> <a href="/delete/events/{{ event.id }}">✖ delete</a> </td>
+          <td class="hidden-small"> <a class="edit" href="/events/{{ event.id }}">✎ change</a> </td>
+          <td class="hidden-small"> <a class="delete" href="/delete/events/{{ event.id }}">✖ delete</a> </td>
         </tr>
         {% endfor %}
       </table>
-      <a href="/create/event">New Event</a>
     </div>
+    <script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+    <script src="/js/events.js"></script> 
   </body>
 </html>

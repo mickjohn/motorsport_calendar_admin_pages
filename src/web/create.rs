@@ -1,28 +1,10 @@
-use super::login;
 use client::Client;
 use model::{NewEvent, NewSession};
-use rocket::request::{FlashMessage, Form};
+use rocket::request::Form;
 use rocket::response::{Flash, Redirect};
 use rocket::State;
-use rocket_contrib::templates::Template;
 use session::Session;
-use tera::Context;
 use web::{static_routes, WebConfig};
-
-// #[get("/create/event")]
-// pub fn get_new_event_page(session: Session, flash: Option<FlashMessage>) -> Template {
-//     let mut context = Context::new();
-//     context.insert("username", &session.get_user().username);
-//     if let Some(flash_message) = flash {
-//         context.insert("flash", flash_message.msg());
-//     }
-//     Template::render("new_event", &context)
-// }
-
-// #[get("/create/event", rank = 2)]
-// pub fn get_new_event_page_redirect() -> Redirect {
-//     Redirect::to(uri!(login::login_page))
-// }
 
 #[post("/events", data = "<event>")]
 pub fn create_event(

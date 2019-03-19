@@ -1,7 +1,6 @@
 use chrono::NaiveDateTime;
 use model::*;
 use motorsport_calendar_common::event::Event;
-use motorsport_calendar_common::event::Session as ApiSession;
 use reqwest::header;
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::Client as ReqwestClient;
@@ -101,19 +100,7 @@ impl Client {
         Ok(event)
     }
 
-    pub fn get_session(&self, event_id: i32, session_id: i32) -> Result<ApiSession, Error> {
-        let client = self.http_client()?;
-        let url = format!(
-            "{}/events/{}/sessions/{}",
-            self.api_url, event_id, session_id
-        );
-        let mut response = client.get(&url).send()?;
-        let text = response.text()?;
-        let session: ApiSession = serde_json::from_str(&text)?;
-        Ok(session)
-    }
-
-    pub fn authenticate(&self) -> Result<(), Error> {
+     pub fn authenticate(&self) -> Result<(), Error> {
         let client = self.http_client_with_auth()?;
         let url = format!("{}/authenticate", self.api_url);
         let response = client

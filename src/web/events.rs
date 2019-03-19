@@ -72,8 +72,3 @@ pub fn get_events_query(
     context.insert("events", &events);
     Template::render("events", &context)
 }
-
-#[get("/events?<_sport_type..>", rank = 3)]
-pub fn get_events_query_redirect(_sport_type: Option<Form<SportType>>) -> Redirect {
-    Redirect::to(uri!(login::login_page))
-}

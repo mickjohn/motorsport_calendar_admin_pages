@@ -1,7 +1,7 @@
 use super::config;
 use super::session::{Session, SessionStore};
 use rocket;
-use rocket::http::{Cookie, Cookies};
+use rocket::http::Cookies;
 use rocket::Rocket;
 use rocket_contrib::templates::Template;
 use session;
@@ -70,7 +70,6 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 events::get_events,
                 events::get_events_redirect,
                 events::get_events_query,
-                events::get_events_query_redirect,
                 events::get_event,
                 events::get_event_redirect,
                 dashboard::dashboard,
@@ -81,8 +80,6 @@ fn init_rocket(web_config: WebConfig) -> Rocket {
                 login::logout_user,
                 update::update_event,
                 update::update_sessions,
-                // create::get_new_event_page,
-                // create::get_new_event_page_redirect,
                 create::create_event,
                 create::create_session,
                 delete::delete_event,
@@ -105,28 +102,4 @@ pub fn get_sesssion_from_cookies(
     cookies
         .get_private(session::SESSION_COOKIE_NAME)
         .and_then(|session_cookie| session_store.get(session_cookie.value()).cloned())
-}
-
-pub fn renew_session(
-    cookies: &mut Cookies,
-    session_store: &mut SessionStore,
-    session: Session,
-) -> Session {
-    let new_session = session_store.renew(session);
-
-    cookies.remove_private(Cookie::named(session::SESSION_COOKIE_NAME));
-    let cookie_string = format!(
-        "{}={}; HttpOnly; Secure; Expires={}; path=/",
-        session::SESSION_COOKIE_NAME,
-        new_session.get_id().to_string(),
-        new_session.get_expires_date_string(),
-    );
-    let cookie = Cookie::parse(cookie_string).unwrap();
-    cookies.add_private(cookie);
-
-    info!(
-        "session renewed for user {}",
-        new_session.get_user().username
-    );
-    new_session
 }
