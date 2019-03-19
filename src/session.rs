@@ -3,10 +3,10 @@ use chrono::Duration;
 use rand::distributions::*;
 use rand::{thread_rng, Rng};
 use rocket::http::Status;
+use rocket::http::{Cookie, Cookies};
 use rocket::outcome::Outcome::*;
 use rocket::request::{self, FromRequest, Request};
 use rocket::State;
-use rocket::http::{Cookie, Cookies};
 use std::collections::HashMap;
 use std::iter;
 use user::UserWithPlaintextPassword;
@@ -34,6 +34,11 @@ impl Session {
             user,
             expires: Utc::now() + Duration::seconds(*SESSION_DURATION_SECS),
         }
+    }
+
+    #[cfg(test)]
+    pub fn new(id: String, user: UserWithPlaintextPassword, expires: DateTime<Utc>) -> Self {
+        Session { id, user, expires }
     }
 
     pub fn get_id(&self) -> &str {
@@ -91,24 +96,6 @@ impl Session {
 impl<'a, 'r> FromRequest<'a, 'r> for Session {
     type Error = ();
 
-    // fn from_request(request: &'a Request<'r>) -> request::Outcome<Self, ()> {
-    //     match request.guard::<State<SessionStoreArc>>() {
-    //         Success(session_store_arc) => {
-    //             let mut session_store = session_store_arc.write().unwrap();
-    //             let mut cookies = request.cookies();
-    //             web::get_sesssion_from_cookies(&mut cookies, &session_store)
-    //                 .map(|session| {
-    //                     let renewed_session =
-    //                         web::renew_session(&mut cookies, &mut session_store, session);
-    //                     Success(renewed_session)
-    //                 })
-    //                 .unwrap_or_else(|| Forward(()))
-    //         }
-    //         Forward(_) => Forward(()),
-    //         Failure(_) => Failure((Status::BadRequest, ())),
-    //     }
-    // }
-
     fn from_request(request: &'a Request<'r>) -> request::Outcome<Self, ()> {
         match request.guard::<State<SessionStoreArc>>() {
             Success(session_store_arc) => {
@@ -162,7 +149,7 @@ impl SessionStore {
         self.store.get(sid)
     }
 
-      pub fn renew(&mut self, old_session: Session) -> Session {
+    pub fn renew(&mut self, old_session: Session) -> Session {
         let old_session_id = old_session.get_id().to_string();
         let new_session = old_session.renew();
         let new_id = new_session.get_id().to_string();
@@ -197,5 +184,84 @@ impl SessionStore {
                 false
             }
         });
+    }
+}
+
+#[cfg(test)]
+mod session_store_tests {
+    use super::*;
+    use crate::user::*;
+    use chrono::Duration;
+    use std::{thread, time};
+
+    #[test]
+    fn can_add_get_and_remove_session() {
+        let u = UserWithPlaintextPassword {
+            username: "user".to_string(),
+            password: "pass".to_string(),
+        };
+        let s = Session::new("abc".to_string(), u, Utc::now());
+
+        let mut session_store = SessionStore::new();
+        session_store.add(s.clone());
+
+        assert_eq!(session_store.get("abc"), Some(&s));
+        session_store.remove("abc");
+        assert_eq!(session_store.get("abc"), None);
+    }
+
+    #[test]
+    fn can_clean_expired_sessions() {
+        let u = UserWithPlaintextPassword {
+            username: "user".to_string(),
+            password: "pass".to_string(),
+        };
+        let s = Session::new("abc".to_string(), u, Utc::now() + Duration::seconds(2));
+        let mut session_store = SessionStore::new();
+        session_store.add(s.clone());
+        assert_eq!(session_store.get("abc"), Some(&s));
+        session_store.clean();
+        // Check session hasn't been cleaned yet
+        assert_eq!(session_store.get("abc"), Some(&s));
+
+        // Sleep for 2 second to allow the session to expire
+        thread::sleep(time::Duration::from_millis(2000));
+        session_store.clean();
+
+        // Should be gone now
+        assert_eq!(session_store.get("abc"), None);
+    }
+
+    #[test]
+    fn renews_when_close_to_expiry() {
+        let u = UserWithPlaintextPassword {
+            username: "user".to_string(),
+            password: "pass".to_string(),
+        };
+        // Session renewal period is 30 minutes. Make session that expies in 30:05
+        let s = Session::new(
+            "abc".to_string(),
+            u,
+            Utc::now() + Duration::seconds(60 * 30 + 5),
+        );
+        let mut session_store = SessionStore::new();
+
+        // Shouldn't renew yet
+        assert_eq!(session_store.renew_if_close_to_expiry(&s), None);
+        thread::sleep(time::Duration::from_millis(6000));
+        assert!(session_store.renew_if_close_to_expiry(&s).is_some());
+    }
+
+    #[test]
+    fn doesnt_renew_expired_session() {
+        let u = UserWithPlaintextPassword {
+            username: "user".to_string(),
+            password: "pass".to_string(),
+        };
+        let s = Session::new("abc".to_string(), u, Utc::now());
+        let mut session_store = SessionStore::new();
+
+        thread::sleep(time::Duration::from_millis(2000));
+        assert!(session_store.renew_if_close_to_expiry(&s).is_none());
     }
 }
