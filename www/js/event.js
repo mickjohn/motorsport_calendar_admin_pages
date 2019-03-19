@@ -83,7 +83,7 @@ function setNewSessionValues() {
 
   var year = newSession.date.getFullYear();
   var month = ("00" + (newSession.date.getMonth() + 1)).slice(-2);
-  var day = ("00" + (newSession.date.getDate() + 1)).slice(-2);
+  var day = ("00" + (newSession.date.getDate())).slice(-2);
   var dateString = `${year}-${month}-${day}`;
   $('#new-session-date').val(dateString);
 }
