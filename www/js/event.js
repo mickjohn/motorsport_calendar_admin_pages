@@ -64,6 +64,43 @@ function deriveNextSession() {
           retVal = new NewSessionGuess("Practice 1", "");
           break;
       };
+    case "Fomula 2":
+    case "Fomula 3":
+      switch (lastSession.name) {
+        case "Practice":
+          retVal = new NewSessionGuess("Qualifying", lastSession.datetime);
+          break;
+        case "Qualifying":
+          retVal = new NewSessionGuess("Race 1", addDay(lastSession.datetime));
+          break;
+        case "Race 1":
+          retVal = new NewSessionGuess("Race 2", addDay(lastSession.datetime));
+          break;
+        default:
+          retVal = new NewSessionGuess("Practice", "");
+          break;
+      };
+    case "DTM":
+      switch (lastSession.name) {
+        case "Free Practice 1":
+          retVal = new NewSessionGuess("Free Practice 2", lastSession.datetime);
+          break;
+        case "Free Practice 2":
+          retVal = new NewSessionGuess("Qualifying 1", addDay(lastSession.datetime));
+          break;
+        case "Qualifying 1":
+          retVal = new NewSessionGuess("Race 1", lastSession.datetime);
+          break;
+        case "Race 1":
+          retVal = new NewSessionGuess("Qualifying 2", addDay(lastSession.datetime));
+          break;
+        case "Qualifying 2":
+          retVal = new NewSessionGuess("Race 2", lastSession.datetime);
+          break;
+        default:
+          retVal = new NewSessionGuess("Free Practice 1", "");
+          break;
+      };
       break;
   }
   return retVal;
