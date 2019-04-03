@@ -64,6 +64,7 @@ function deriveNextSession() {
           retVal = new NewSessionGuess("Practice 1", "");
           break;
       };
+      break;
     case "Fomula 2":
     case "Fomula 3":
       switch (lastSession.name) {
@@ -80,6 +81,7 @@ function deriveNextSession() {
           retVal = new NewSessionGuess("Practice", "");
           break;
       };
+      break;
     case "DTM":
       switch (lastSession.name) {
         case "Free Practice 1":
