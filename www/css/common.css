@@ -3,67 +3,41 @@ body {
 }
 
 header {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    background-color: #3c8dbc;
+    padding: 10px 5px 10px 5px;
 }
 
-header a {
+header a,span {
     text-decoration: none;
-    color: #258489;
-    font-weight: bold;
-}
-
-@media only screen and (max-width: 700px) {
-    header a {
-        font-size: 2em;
-    }
-}
-
-@media only screen and (min-width: 700px) {
-    header a {
-        font-size: 4em;
-    }
+    /* font-weight: bold; */
+    font-size: 18px;
+    color: white;
 }
 
 /* Sport Colours */
 
 .formula_1_sport {
-    border-color: #cb3939;
-}
-
-.formula_1_sport h1 {
-    color: #cb3939;
+    background-color: #cb3939;
 }
 
 .indycar_sport {
-    border-color: #7b8dfc;
-}
-
-.indycar_sport h1 {
-    color: #7b8dfc;
+    background-color: #7b8dfc;
 }
 
 .gp2_sport {
-    border-color: #70d7ff;
-}
-
-.gp2_sport h1 {
-    color: #70d7ff;
+    background-color: #70d7ff;
 }
 
 .formula_2_sport {
-    border-color: #46b0da;
-}
-
-.formula_2_sport h1 {
-    color: #46b0da;
+    background-color: #46b0da;
 }
 
 .formula_3_sport {
-    border-color: #bfbf3f;
+    background-color: #bfbf3f;
 }
 
-.formula_3_sport h1 {
-    color: #bfbf3f;
-}
 
 /* End Sport Colours */

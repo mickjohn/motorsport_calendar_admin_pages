@@ -1,0 +1,128 @@
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 360px;
+  }
+  
+  .close {
+    background-color: #924141;
+  }
+  
+  /* New Event */
+  
+  /* TODO - On a small screen make the font small, so that the entire 'new event' modal can fit on the page*/
+  
+  .modal input[type=text] {
+    width: 100%;
+    padding: 3px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #d8cbcb;
+    border-radius: 4px;
+    width: 12em;
+    color: #484848;
+  }
+  
+  /* Buttons */
+  
+  .modal input[type=submit], .modal button {
+    color: #fff;
+    margin: 1em;
+    padding: 1em;
+    border: 2px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  
+  @media only screen and (max-width: 700px) {
+    .modal-content {
+      width: 15em;
+    }
+    .event-form {
+      width: 12em;
+    }
+    h1 {
+      font-size: 1.2em;
+    }
+    td {
+      font-size: 0.8em;
+    }
+    .modal input[type=text] {
+      font-size: 0.8em;
+    }
+    /* Buttons */
+    .modal input[type=submit], .modal button {
+      font-size: 0.7em;
+    }
+  }
+  
+  @media only screen and (min-width: 700px) {
+    .modal input[type=text] {
+      font-size: 16px;
+    }
+    /* Buttons */
+    .modal input[type=submit], .modal button {
+      font-size: 18px;
+    }
+  }
+  
+  .update-event-button {
+    background-color: #4368a8;
+  }
+
+  .new-event {
+    
+  }
+  
+  /* End Buttons */
+  
+  /* Event Box */
+  
+  .event-form {
+    border: 2px solid #d1cfcf;
+    background-color: white;
+    display: block;
+    text-align: center;
+    color: #484848;
+    margin: 1em auto;
+    padding: 0.5em 1em 0.5em 1em;
+  }
+  
+  @media only screen and (max-width: 700px) {
+    .event-form {
+      width: 12em;
+    }
+  }
+  
+  @media only screen and (min-width: 700px) {
+    .event-form {
+      width: 20em;
+    }
+  }

@@ -6,74 +6,46 @@
     <meta name="theme-color" content="#000000">
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/new_event_modal.css">
     <title>MJ Admin</title>
   </head>
   <body>
 
     {% include "includes/inc_header" %}
 
-    <h1 class="heading"> Actions </h1>
-    <div class="actions">
-      <button id='create-event' class="new-event">+ New Event</button>
-      <a href='/events' class="list-events">View All Events</a>
-      <a href='/logout' class="logout">Logout</a>
-    </div>
-
-    <h1 class="heading"> Overview </h1>
-    <div id="sport-count-section">
-      {% for sport_info in sport_info_list %}
-      <a href="/events?sport_type={{ sport_info.name }}">
-        {% set sport_class = sport_info.name | escape | lower | replace(from=" ", to="_") %}
-        <div class="sport-count {{ sport_class }}_sport">
-          <h1>{{ sport_info.name | escape }}</h1>
-          <h2>{{ sport_info.event_count }} Events</h2>
-          <h3>{{ sport_info.session_count }} Sessions</h3>
+    <div class="content">
+      <div class="section-box">
+        <b> Actions </b>
+        <div class="actions">
+          <button id='create-event' class="new-event"> + New </button>
+          <a href='/events' class="list-events"> View </a>
         </div>
-      </a>
-      {% endfor %}
-    </div>
-
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <form method="post" action="/events">
-          <div class="event-form">
-            <h1> Create New Event </h1>
-            <table>
-              <tbody>
-                <tr>
-                  <td><h5> Sport Type </h5></td>
-                  <td><input id="event_sport" type="text" name="sport"> </td>
-                </tr>
-                <tr>
-                  <td><h5> Title </h5></td>
-                  <td> <input id="event_title" type="text" name="title"> </td>
-                </tr>
-                <tr>
-                  <td><h5> Country </h5></td>
-                  <td> <input id="event_country" type="text" name="country"> </td>
-                </tr>
-                <tr>
-                  <td><h5> Location </h5></td>
-                  <td> <input id="event_location" type="text" name="location"> </td>
-                </tr>
-                <tr>
-                  <td><h5> Track </h5></td>
-                  <td> <input id="event_track" type="text" name="track"> </td>
-                </tr>
-              </tbody>
-            </table>
-            <input type="submit" value="Create Event" class="update-event-button">
-            <button type="button" class="close"> Close </button>
-          <div/>
-        </form>
       </div>
-    </div>
+
+      <div class="section-box" id="sport-count-section">
+        <b> Overview </b>
+        <div id="sport-count-container">
+        {% for sport_info in sport_info_list %}
+        <a href="/events?sport_type={{ sport_info.name }}">
+          {% set sport_class = sport_info.name | escape | lower | replace(from=" ", to="_") %}
+          <div class="sport-count {{ sport_class }}_sport">
+            <h1>{{ sport_info.name | escape }}</h1>
+            <span>
+            <h2>{{ sport_info.event_count }} Events</h2>
+            <h3>{{sport_info.session_count }} Sessions</h3>
+            </span>
+          </div>
+        </a>
+        {% endfor %}
+        </div>
+      </div>
+
+      {% include "includes/inc_new_event_modal" %}
+
     <script
 			  src="https://code.jquery.com/jquery-3.3.1.min.js"
 			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 			  crossorigin="anonymous"></script>
-    <script src="/js/dashboard.js"></script> 
+    <script src="/js/new_event_modal.js"></script> 
   </body>
 </html>

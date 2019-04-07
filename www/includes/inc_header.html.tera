@@ -1,3 +1,5 @@
   <header>
-    <a href="/dashboard">mickjohn.com</a>
+    <a class="home" href="/dashboard">home</a>
+    <span> mickjohn.com admin</span>
+    <a class="logout" href="/logout">logout</a>
   </header>

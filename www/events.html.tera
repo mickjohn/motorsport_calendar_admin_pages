@@ -6,41 +6,50 @@
     <meta name="theme-color" content="#000000">
     <link rel="stylesheet" href="/css/events.css">
     <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/new_event_modal.css">
     <title>MJ Admin</title>
   </head>
   <body>
   
     {% include "includes/inc_header" %}
 
-    <div id="root">
-      <table class="events-table">
-        <tr>
-          <th> Sport </th>
-          <th class="hidden-small"> Title </th>
-          <th> Country </th>
-          <th class="hidden-small"> Location </th>
-          <th> Track </th>
-          <th class="hidden-small"> Edit </th>
-          <th class="hidden-small"> Delete </th>
-        </tr>
-        {% for event in events %}
-        <tr class="event-row">
-          <td class="hidden">{{ event.id }} </td>
-          <td> {{ event.sport }} </td>
-          <td class="hidden-small"> {{ event.title}} </td>
-          <td> {{ event.country }} </td>
-          <td class="hidden-small"> {{ event.location }} </td>
-          <td> {{ event.track }} </td>
-          <td class="hidden-small"> <a class="edit" href="/events/{{ event.id }}">✎ change</a> </td>
-          <td class="hidden-small"> <a class="delete" href="/delete/events/{{ event.id }}">✖ delete</a> </td>
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
+    <div class="content">
+      <div class="section-box" id="root">
+        <p><b> Events - all events in the database </b><p>
+        <button id='create-event' class="new-event"> + New </button>
+        <table class="events-table">
+          <tr>
+            <th class="hidden-small"> Id </th>
+            <th> Sport </th>
+            <th class="hidden-small"> Title </th>
+            <th> Country </th>
+            <th class="hidden-small"> Location </th>
+            <th> Track </th>
+            <th class="hidden-small" colspan="2"> Actions </th>
+          </tr>
+          {% for event in events %}
+          <tr class="event-row">
+            <td class="hidden-small"> {{ event.id }} </td>
+            <td> {{ event.sport }} </td>
+            <td class="hidden-small"> {{ event.title}} </td>
+            <td> {{ event.country }} </td>
+            <td class="hidden-small"> {{ event.location }} </td>
+            <td> {{ event.track }} </td>
+            <td class="hidden-small"> <a class="edit" href="/events/{{ event.id }}">✎ edit</a> </td>
+            <td class="hidden-small"> <a class="delete" href="/delete/events/{{ event.id }}">🗑 delete</a> </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div> <!-- end content -->
+
+    {% include "includes/inc_new_event_modal" %}
+
     <script
 			  src="https://code.jquery.com/jquery-3.3.1.min.js"
 			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 			  crossorigin="anonymous"></script>
     <script src="/js/events.js"></script> 
+    <script src="/js/new_event_modal.js"></script> 
   </body>
 </html>
