@@ -79,12 +79,33 @@ body {
 /*  END ACTIONS */
 /****************/
 
+/*****************/
+/* Section Boxes */
+/*****************/
 
+.section-box {
+  border-top-style: solid;
+  border-top-width: 3px;
+  border-top-color: #3c8dbc;
+  background-color: #fff;
+  margin: 2em 1em;
+}
 
-/* Sport Counts */
+.section-box b {
+  color: #514e4e;
+  font-size: 20px;
+  padding-left: 28px;
+}
 
-/* Sport Counts - Small screen */
+/*********************/
+/* End Section Boxes */
+/*********************/
 
+/*********************/
+/* Sport Count boxes */
+/*********************/
+
+/* Small screen */
 @media only screen and (max-width: 700px) {
   .sport-count {
     display: inline-block;
@@ -104,8 +125,7 @@ body {
   }
 }
 
-/* Sport Counts - Large screen */
-
+/* Large screen */
 @media only screen and (min-width: 700px) {
   .sport-count {
     display: inline-block;
@@ -136,18 +156,6 @@ body {
   padding: 0.3em;
 }
 
-.section-box {
-  border-top-style: solid;
-  border-top-width: 3px;
-  border-top-color: #3c8dbc;
-  background-color: #fff;
-  margin: 2em 1em;
-}
-
-.section-box b {
-  color: #514e4e;
-  font-size: 20px;
-  padding-left: 28px;
-}
-
-/* End sport counts */
+/*********************/
+/* Sport Count boxes */
+/*********************/

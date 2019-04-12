@@ -35,8 +35,10 @@
             <td> {{ event.country }} </td>
             <td class="hidden-small"> {{ event.location }} </td>
             <td> {{ event.track }} </td>
-            <td class="hidden-small"> <a class="edit" href="/events/{{ event.id }}">✎ edit</a> </td>
-            <td class="hidden-small"> <a class="delete" href="/delete/events/{{ event.id }}">🗑 delete</a> </td>
+            <td class="hidden-small actions">
+              <a class="edit" href="/events/{{ event.id }}">✎ edit</a>
+              <a class="delete" href="/delete/events/{{ event.id }}">🗑 delete</a>
+            </td>
           </tr>
           {% endfor %}
         </table>

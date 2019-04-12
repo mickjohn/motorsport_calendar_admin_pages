@@ -46,18 +46,21 @@ body {
   text-decoration: none;
   text-align: center;
   font-weight: bold;
-  color: #514e4e;
+  color: white;
   padding: 8px;
   border-radius: 5px;
-  border: 1px solid #514e4e;
+}
+
+.actions {
+  min-width: 148px;
 }
 
 .edit {
-  background-color: #f0ed3b;
+  background-color: #2e7cf7;
 }
 
 .delete {
-  background-color: #e66a6a;
+  background-color: #cc454b;
 }
 
 .section-box tr:nth-child(even) {

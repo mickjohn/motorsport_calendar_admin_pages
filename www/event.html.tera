@@ -1,102 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <script
-			  src="https://code.jquery.com/jquery-3.3.1.min.js"
-			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-			  crossorigin="anonymous"></script>
-    <script src="/js/event.js"></script> 
-    <link rel="stylesheet" href="/css/event.css">
-    <link rel="stylesheet" href="/css/common.css">
 
-    <title>MJ Admin</title>
-  </head>
-  <body>
-    {% include "includes/inc_header" %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/js/event.js"></script>
+  <link rel="stylesheet" href="/css/event.css">
+  <link rel="stylesheet" href="/css/common.css">
 
-    {% if flash %}
-    <h1> {{ flash }} </h1>
-    {% endif %}
+  <title>MJ Admin</title>
+</head>
 
-    <div id="root">
-      <div class="event-form">
-      <h3> Event {{ event.id }}</h3>
+<body>
+  {% include "includes/inc_header" %}
+
+  {% if flash %}
+  <h1> {{ flash }} </h1>
+  {% endif %}
+
+  <div class="content">
+    <div class="section-box">
       <form method="post" action="/events/{{ event.id }}">
-        <h1> Event: </h1>
+        <h1> Event {{ event.id }} </h1>
         <div class="event-box">
-          <table>
-            <tbody>
-              <tr>
-                <td>Sport Type</td>
-                <td><input id="event_sport" type="text" name="sport" value="{{ event.sport }}"/></td>
-              </tr>
-              <tr>
-                <td>Title</td>
-                <td><input id="event_title" type="text" name="title" value="{{ event.title }}"/></td>
-              </tr>
-              <tr>
-                <td>Country</td>
-                <td><input id="event_country" type="text" name="country" value="{{ event.country }}"/></td>
-              </tr>
-              <tr>
-                <td>Location</td>
-                <td> <input id="event_location" type="text" name="location" value="{{ event.location }}"/></td>
-              </tr>
-              <tr>
-                <td>Track</td>
-                <td><input id="event_track" type="text" name="track" value="{{ event.track }}"/></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <input type="submit" value="Update Event" class="update-event-button">
+          <div class="event-fields-row">
+            <p>
+              <label for="event_sport">Sport Type</label> <br />
+              <input id="event_sport" type="text" name="sport" value="{{ event.sport }}" />
+            </p>
+
+            <p>
+              <label for="event_title">Title</label> <br />
+              <input id="event_title" type="text" name="title" value="{{ event.title }}" />
+            </p>
+          </div> <!-- end row 1 -->
+
+          <div class="event-fields-row">
+            <p>
+              <label for="event_country">Country</label> <br />
+              <input id="event_country" type="text" name="country" value="{{ event.country }}" />
+            </p>
+
+            <p>
+              <label for="event_location">Location</label> <br />
+              <input id="event_location" type="text" name="location" value="{{ event.location }}" />
+            </p>
+          </div> <!-- end row 2 -->
+
+          <p>
+            <label for="event_track">Track</label> <br />
+            <input id="event_track" type="text" name="track" value="{{ event.track }}" />
+          </p>
+          <input type="submit" value="Update Event" class="update-event-button">
       </form>
-      </div>
+    </div> <!-- end event box -->
+  </div> <!-- end section box -->
 
-    <div class="session-box">
-      <h3>Sessions</h3>
-      <form method="post" action="/events/{{ event.id }}/update_sessions" id="sessions_form">
-        <table class="sessions-table">
-          <tbody id="sessions-table-body">
-            <tr>
-              <th> ID </th>
-              <th> Name </th>
-              <th> Date </th>
-              <th> Time </th>
-              <th> Delete </th>
-            </tr>
-            {% for session in event.sessions %}
-            <tr>
-              <td> {{ session.id }} </td>
-              <td class="hidden"> <input type="text" name="id_{{ loop.index0 }}" value="{{ session.id }}"/> </td>
-              <td> <input type="text" name="name_{{ loop.index0 }}" value="{{ session.name }}"/> </td>
-              <td class="hidden"> <input type="text" name="time_{{ loop.index0 }}" value="{{ session.time }}"/> </td>
-              <td> <input type="date" name="date_in_{{ loop.index0 }}" value="{{ session.time | date(format='%Y-%m-%d') }}"> </td>
-              <td> <input type="time" name="time_in_{{ loop.index0 }}" value="{{ session.time | date(format='%H:%M') }}"/> </td>
-              <td> <a href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <input type="submit" value="Update Sessions" class="update-event-button">
-        <button type="button" id="new-session-button" class="new-session-button">New Session</button>
-        <button type="normal" id="cancel-new-session-top" class="cancel-new-session">Cancel</button>
-      </form>
+  <div class="section-box section-box-sessions">
+    <h3>Sessions</h3>
+    <form method="post" action="/events/{{ event.id }}/update_sessions" id="sessions_form">
+      <table class="sessions-table">
+        <tbody id="sessions-table-body">
+          <tr>
+            <th> ID </th>
+            <th> Name </th>
+            <th> Date </th>
+            <th> Time </th>
+            <th> Delete </th>
+          </tr>
+          {% for session in event.sessions %}
+          <tr>
+            <td> {{ session.id }} </td>
+            <td class="hidden"> <input type="text" name="id_{{ loop.index0 }}" value="{{ session.id }}" /> </td>
+            <td> <input type="text" name="name_{{ loop.index0 }}" value="{{ session.name }}" /> </td>
+            <td class="hidden"> <input type="text" name="time_{{ loop.index0 }}" value="{{ session.time }}" /> </td>
+            <td> <input type="date" name="date_in_{{ loop.index0 }}"
+                value="{{ session.time | date(format='%Y-%m-%d') }}"> </td>
+            <td> <input type="time" name="time_in_{{ loop.index0 }}"
+                value="{{ session.time | date(format='%H:%M') }}" /> </td>
+            <td> <a href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-      <form method="post" action="/events/{{ event.id }}/create_session" id="new-session-form">
-        Session Name: <input id="new-session-name" type="text" name="name" value="Practice 1"><br/>
-        <input id="new-session-datetime" type="text" name="time">
+      <input type="submit" value="Update Sessions" class="update-event-button">
+      <button type="button" id="new-session-button" class="new-session-button">New Session</button>
+      <button type="normal" id="cancel-new-session-top" class="cancel-new-session">Cancel</button>
+    </form>
 
-        Session Date: <input id="new-session-date" type="date" value="2019-04-01"><br/>
-        Session Time (in UTC): <input id="new-session-time" id="time" type="time" value="12:00"><br/>
+    <form method="post" action="/events/{{ event.id }}/create_session" id="new-session-form">
+      Session Name: <input id="new-session-name" type="text" name="name" value="Practice 1"><br />
+      <input id="new-session-datetime" type="text" name="time">
 
-        <input type="submit" id="submit-new-session" value="Create new session" class="update-event-button">
-        <button type="button" id="cancel-new-session" class="cancel-new-session">Cancel</button>
-      </form>
-    </div>
-    </div>
-  </body>
+      Session Date: <input id="new-session-date" type="date" value="2019-04-01"><br />
+      Session Time (in UTC): <input id="new-session-time" id="time" type="time" value="12:00"><br />
+
+      <input type="submit" id="submit-new-session" value="Create new session" class="update-event-button">
+      <button type="button" id="cancel-new-session" class="cancel-new-session">Cancel</button>
+    </form>
+  </div> <!-- end of section box -->
+  </div> <!-- end of content -->
+</body>
+
 </html>
