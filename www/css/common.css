@@ -6,13 +6,12 @@ header {
     display: flex;
     justify-content: space-between;
     color: white;
-    background-color: #3c8dbc;
+    background-color: #34495e;
     padding: 10px 5px 10px 5px;
 }
 
 header a,span {
     text-decoration: none;
-    /* font-weight: bold; */
     font-size: 18px;
     color: white;
 }
@@ -20,23 +19,23 @@ header a,span {
 /* Sport Colours */
 
 .formula_1_sport {
-    background-color: #cb3939;
+    background-color: #f7a6a6;
 }
 
 .indycar_sport {
-    background-color: #7b8dfc;
+    background-color: #b7bff7;
 }
 
 .gp2_sport {
-    background-color: #70d7ff;
+    background-color: #a7dff5;
 }
 
 .formula_2_sport {
-    background-color: #46b0da;
+    background-color: #a7dff5;
 }
 
 .formula_3_sport {
-    background-color: #bfbf3f;
+    background-color: #ffff94;
 }
 
 
