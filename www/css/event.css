@@ -27,6 +27,19 @@ body {
   min-width: 49em;
 }
 
+.section-box-sessions a {
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.delete {
+  background-color: #cc454b;
+}
+
 .section-box b {
   color: #514e4e;
   font-size: 20px;
@@ -124,22 +137,6 @@ input[type=submit], button {
 /* End Event Box */
 
 /* Session Box */
-.session-box {
-  border: 2px solid #d1cfcf;
-  display: inline-block;
-  margin: 0.8em;
-  color: #484848;
-  background-color: #fff;
-  text-align: center;
-  width: 50em;
-}
-
-.session-box h3 {
-  text-align: center;
-  padding: 7px 0 3px 0;
-  margin: 0;
-}
-
 #new-session-datetime {
   display: none;
 }
@@ -161,14 +158,4 @@ input[type=submit], button {
 
 .hidden {
   display: none;
-}
-
-.sessions-table-mobile div {
-  color: black;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 18em;
 }

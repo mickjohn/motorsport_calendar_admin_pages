@@ -81,7 +81,7 @@
                 value="{{ session.time | date(format='%Y-%m-%d') }}"> </td>
             <td> <input type="time" name="time_in_{{ loop.index0 }}"
                 value="{{ session.time | date(format='%H:%M') }}" /> </td>
-            <td> <a href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>
+            <td> <a class="delete" href="/delete/events/{{ event.id }}/sessions/{{ session.id }}">✖</a> </td>
           </tr>
           {% endfor %}
         </tbody>
