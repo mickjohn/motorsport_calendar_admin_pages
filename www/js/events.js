@@ -1,10 +1,13 @@
 function init() {
-  $('.event-row').click(function (e) {
-    if ($(window).width() <= 700) {
-      var event_id = e.currentTarget.childNodes[1].textContent.trim();
-      window.location.href = `/events/${event_id}`;
-    }
-  });
+  var rows = document.getElementsByClassName('event-row');
+  for (let i = 0; i < rows.length; i++) {
+    rows[i].addEventListener('click', event => {
+      if (window.innerWidth <= 700) {
+        var event_id = event.currentTarget.childNodes[1].textContent.trim();
+        window.location.href = `/events/${event_id}`;
+      }
+    });
+  }
 }
 
 if (document.readyState === "loading") {
